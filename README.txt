@@ -1,3 +1,5 @@
+SymptHome
+
 This is a website that allows you to inquire about your disease from the comfort of your own home.
 Avoid waiting in line and taking a day off to see your doctor, as well as the chance of human error.
 The procedure is very simple - type in the symptoms and select the recommended options that best
