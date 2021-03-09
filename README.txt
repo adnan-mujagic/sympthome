@@ -12,3 +12,7 @@ you to physically visit a health institution. In case the website suggests a med
 a prescription from a professional institution, please make sure you visit your doctor and get one.
 
 This information is taken from the github description of the project.
+
+
+GITHUB REPO LINK:
+https://github.com/adnan-mujagic/SymptHome.git

@@ -1,0 +1,12 @@
+{
+    "name": "adnan_mujagic/sympthome",
+    "description": "A website that takes symptoms as input from the users and displays the diseases that they are most likely to have.",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "adnan-mujagic",
+            "email": "adnanmujagic@outlook.com"
+        }
+    ],
+    "require": {}
+}
