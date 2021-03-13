@@ -7,15 +7,16 @@ require_once dirname(__FILE__). "/dao/UsersDao.class.php";
 
 $userdao = new UsersDao();
 
-$user = [
-  "first_name"=>"Muhamed",
-  "last_name"=>"Begic",
-  "age"=>21,
-  "password"=>"begara123",
-  "email"=>"muki@ba"
-];
-$userdao->insert_user($user);
+$updates = array(
+  "first_name"=>"Adnan",
+  "last_name"=>"Mujagic",
+  "email"=>"adnanmujagic@outlook.com"
+);
 
-print_r($user);
+
+
+
+
+
 
  ?>

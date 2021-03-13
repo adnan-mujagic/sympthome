@@ -21,28 +21,39 @@ class BaseDao{
   }
 
   protected function insert($table, $entity){
-    $query = 'INSERT INTO '.$table.' (';
+    $query="INSERT INTO ".$table." (";
     foreach($entity as $key=>$value){
       $query.=$key.", ";
     }
     $query=substr($query,0,-2);
     $query.=") VALUES (";
-    foreach($entity as $key=>$value){
-      $query.=":".$key;
+    foreach ($entity as $key => $value) {
+      $query.=":".$key.", ";
     }
     $query=substr($query,0,-2);
     $query.=")";
 
 
+    $stmt=$this->connection->prepare($query);
+    $stmt->execute($entity);
 
-    $s=this->connection->prepare($query);
-    $s->execute($entity);
-    $entity['id']=$this->connection->lastInsertId();
     return $entity;
   }
 
 
-  protected function update(){
+  protected function update($table, $updates, $id,$id_column="id"){
+    $query="UPDATE ".$table." SET ";
+    foreach ($updates as $key => $value) {
+      $query.=$key."=:".$key.", ";
+    }
+    $query=substr($query,0,-2);
+    $query.=" WHERE ".$id_column."=:id";
+
+    $stmt=$this->connection->prepare($query);
+    $updates["id"]=$id;
+    $stmt->execute($updates);
+
+
 
   }
 
@@ -53,9 +64,11 @@ class BaseDao{
   }
 
   protected function query_single($query,$params){
-    $results = $this->query($query,$params);
+    $results=$this->query($query,$params);
     return reset($results);
   }
+
+  
 
 
 }
