@@ -19,8 +19,14 @@ class UsersDao extends BaseDao{
     return $this->query_single("SELECT * FROM users WHERE id=:id",["id"=>$id]);
   }
 
-  public function insert_user($entity){
-    this->insert("users",$entity);
+  public function insert_user($user){
+    $query="INSERT INTO users (first_name, last_name, age, password, email) VALUES (:first_name,:last_name,:age,:password,:email)";
+    $this->connection->prepare($query)->execute($user);
+
+  }
+
+  public function update_user($id, $user){
+
   }
 }
 
