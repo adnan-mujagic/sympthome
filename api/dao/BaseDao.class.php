@@ -12,28 +12,49 @@ class BaseDao{
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEMA, Config::DB_USERNAME, Config::DB_PASSWORD);
       // set the PDO error mode to exception
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      echo "CONNECTED";
+
     } catch(PDOException $e) {
-      echo "Connection failed: " . $e->getMessage();
+      throw $e;
     }
 
-    
-  }
-
-  public function insert(){
 
   }
 
-  public function update(){
+  protected function insert($table, $entity){
+    $query = 'INSERT INTO '.$table.' (';
+    foreach($entity as $key=>$value){
+      $query.=$key.", ";
+    }
+    $query=substr($query,0,-2);
+    $query.=") VALUES (";
+    foreach($entity as $key=>$value){
+      $query.=":".$key;
+    }
+    $query=substr($query,0,-2);
+    $query.=")";
+
+
+
+    $s=this->connection->prepare($query);
+    $s->execute($entity);
+    $entity['id']=$this->connection->lastInsertId();
+    return $entity;
+  }
+
+
+  protected function update(){
 
   }
 
-  public function query(){
-
+  protected function query($query,$params){
+    $stmt=$this->connection->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function query_single(){
-
+  protected function query_single($query,$params){
+    $results = $this->query($query,$params);
+    return reset($results);
   }
 
 
