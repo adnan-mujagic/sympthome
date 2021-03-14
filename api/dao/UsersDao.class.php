@@ -35,7 +35,7 @@ class UsersDao extends BaseDao{
     return $this->query($query,array("id" =>$id ));
   }
 
-  
+
 }
 
  ?>
