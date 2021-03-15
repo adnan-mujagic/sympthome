@@ -16,15 +16,6 @@ class MedicinesDao extends BaseDao{
     return $this->query("SELECT * FROM medicines WHERE name LIKE '%$name%'",array());
   }
 
-  public function update_medicine($updates,$id){
-    $this->update("medicines",$updates,$id);
-
-  }
-
-  public function insert_medicine($medicine){
-    $this->insert("medicines",$medicine);
-  }
-
 }
 
 
