@@ -3,10 +3,11 @@ require_once dirname(__FILE__)."/../config.php";
 class BaseDao{
   protected $connection;
 
+  private $table;
 
 
-  public function __construct(){
-
+  public function __construct($table){
+    $this->table=$table;
 
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEMA, Config::DB_USERNAME, Config::DB_PASSWORD);
@@ -37,11 +38,12 @@ class BaseDao{
     $stmt=$this->connection->prepare($query);
     $stmt->execute($entity);
 
+    $entity['id'] = $this->connection->lastInsertId();
     return $entity;
   }
 
 
-  protected function update($table, $updates, $id,$id_column="id"){
+  protected function execute_update($table, $updates, $id,$id_column="id"){
     $query="UPDATE ".$table." SET ";
     foreach ($updates as $key => $value) {
       $query.=$key."=:".$key.", ";
@@ -52,9 +54,7 @@ class BaseDao{
     $stmt=$this->connection->prepare($query);
     $updates["id"]=$id;
     $stmt->execute($updates);
-
-
-
+    return $updates;
   }
 
   protected function query($query,$params){
@@ -68,7 +68,24 @@ class BaseDao{
     return reset($results);
   }
 
-  
+  public function add($entity){
+    return json_encode($this->insert($this->table, $entity),JSON_PRETTY_PRINT);
+  }
+
+  public function update($updates, $id){
+    return $this->execute_update($this->table, $updates, $id);
+  }
+
+  public function get_by_id($id){
+    return $this->query_single("SELECT * FROM ".$this->table." WHERE id=:id",["id"=>$id]);
+  }
+
+  public function get_all($limit=25, $offset = 0){
+    return json_encode($this->query("SELECT * from ".$this->table." LIMIT ".$limit." OFFSET ".$offset, []),JSON_PRETTY_PRINT);
+
+  }
+
+
 
 
 }

@@ -8,5 +8,7 @@
             "email": "adnanmujagic@outlook.com"
         }
     ],
-    "require": {}
+    "require": {
+        "mikecao/flight": "^1.3"
+    }
 }

@@ -14,15 +14,6 @@
       return $this->query("SELECT * FROM symptoms WHERE name LIKE '%$name%';", array());
 
     }
-
-    public function update_symptom($updates,$id){
-      $this->update("symptoms",$updates,$id);
-    }
-
-    public function insert_symptom($symptom){
-      $this->insert("symptoms",$symptom);
-    }
-
   }
 
 

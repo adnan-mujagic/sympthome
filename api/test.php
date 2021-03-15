@@ -14,21 +14,13 @@ $medicinedao = new MedicinesDao();
 $diseasedao = new DiseasesDao();
 
 
-$new_symp=[
-  "name"=>"Abdominal Pain",
+$updates=[
+
+  "age"=>23,
+  "password"=>"not a strong password",
 
 ];
 
-$results = $symdao->update_symptom($new_symp,4);
-
-
-
-
-
-
-
-
-
-
+print_r($userdao->update($updates,7));
 
  ?>

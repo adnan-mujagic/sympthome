@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 class DiseasesDao extends BaseDao{
 
   public function __construct(){
-    parent::__construct();
+    parent::__construct("diseases");
 
   }
 
