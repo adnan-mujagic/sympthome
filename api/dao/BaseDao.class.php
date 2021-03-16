@@ -69,7 +69,7 @@ class BaseDao{
   }
 
   public function add($entity){
-    return json_encode($this->insert($this->table, $entity),JSON_PRETTY_PRINT);
+    return $this->insert($this->table, $entity);
   }
 
   public function update($updates, $id){
@@ -80,9 +80,8 @@ class BaseDao{
     return $this->query_single("SELECT * FROM ".$this->table." WHERE id=:id",["id"=>$id]);
   }
 
-  public function get_all($limit=25, $offset = 0){
-    return json_encode($this->query("SELECT * from ".$this->table." LIMIT ".$limit." OFFSET ".$offset, []),JSON_PRETTY_PRINT);
-
+  public function get_all($offset = 0, $limit = 25){
+    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET {$offset}", []);
   }
 
 
