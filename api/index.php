@@ -7,14 +7,20 @@ require_once dirname(__FILE__)."/dao/BaseDao.class.php";
 require dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/dao/UsersDao.class.php";
 
+Flight::register("user","UsersDao");
+
+
 Flight::route("/",function(){
   echo "Hello world";
 });
 
-Flight::route("/hello2",function(){
-  echo "Hello world TWO";
+Flight::route("/users",function(){
+  Flight::json(Flight::user()->get_all());
 });
 
+Flight::route("/users/@id",function($id){
+  Flight::json(Flight::user()->get_by_id($id));
+});
 Flight::start();
 
 
