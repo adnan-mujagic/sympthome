@@ -5,13 +5,14 @@ error_reporting(E_ALL);
 
 
 
-require_once dirname(__FILE__)."/dao/BaseDao.class.php";
+
 require_once dirname(__FILE__)."/../vendor/autoload.php";
-require_once dirname(__FILE__)."/dao/UsersDao.class.php";
 require_once dirname(__FILE__)."/services/UserService.class.php";
+
 //Register Classes Here
 Flight::register("user","UsersDao");
 Flight::register("userService","UserService");
+
 
 
 Flight::map("query",function($name,$default_value=NULL){

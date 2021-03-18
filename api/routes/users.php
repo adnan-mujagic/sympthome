@@ -13,19 +13,27 @@ Flight::route("GET /users",function(){
 });
 
 Flight::route("GET /users/@id",function($id){
-  Flight::json(Flight::user()->get_by_id($id));
+  Flight::json(Flight::userService()->get_by_id($id));
 });
 
 Flight::route("POST /users",function(){
   $data = Flight::request()->data->getData();
-  Flight::json(Flight::user->add($data));
+  Flight::json(Flight::userService()->add($data));
 });
 
 Flight::route("PUT /users/@id",function($id){
   $data=Flight::request()->data->getData();
-  Flight::user()->update($data,$id);
-  Flight::json(Flight::user()->get_by_id($id));
-})
+  Flight::userService()->update($data,$id);
+  Flight::json(Flight::userService()->get_by_id($id));
+});
+
+Flight::route("GET /users/@id/symptoms", function($id){
+  Flight::json(Flight::userService()->get_user_symptoms($id));
+});
+
+Flight::route("GET /users/@id/diseases", function($id){
+  Flight::json(Flight::userService()->get_user_diseases($id));
+});
 
 
  ?>

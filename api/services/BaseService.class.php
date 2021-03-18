@@ -22,6 +22,10 @@
       return $this->dao->update($updates,$id);
     }
 
+    public function query($query, $params){
+      return $this->dao->query($query, $params);
+    }
+
   }
 
  ?>

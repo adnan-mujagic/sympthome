@@ -15,15 +15,6 @@ class UsersDao extends BaseDao{
     return $this->query_single("SELECT * FROM users WHERE email=:email",array("email"=>$email));
   }
 
-  public function get_user_by_id($id){
-    return $this->query_single("SELECT * FROM users WHERE id=:id",array("id"=>$id));
-  }
-
-  public function get_user_symptoms($id){
-    $query="SELECT s.name as Symptom FROM symptoms s JOIN user_symptom_log usl ON usl.symptom_id=s.id JOIN users u ON u.id=usl.user_id WHERE u.id=:id";
-    return $this->query($query,array("id" =>$id ));
-  }
-
   public function get_user_by_name($name, $offset, $limit){
     $query = "SELECT * FROM users
               WHERE LOWER(first_name) LIKE LOWER(CONCAT('%',:name,'%'))
