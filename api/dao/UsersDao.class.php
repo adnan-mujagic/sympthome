@@ -24,6 +24,13 @@ class UsersDao extends BaseDao{
     return $this->query($query,array("id" =>$id ));
   }
 
+  public function get_user_by_name($name, $offset, $limit){
+    $query = "SELECT * FROM users
+              WHERE LOWER(first_name) LIKE LOWER(CONCAT('%',:name,'%'))
+              OR LOWER(last_name) LIKE LOWER(CONCAT('%',:name,'%'))";
+    return $this->query($query, ["name"=>$name]);
+  }
+
 
 }
 

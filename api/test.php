@@ -46,7 +46,7 @@
 
 
 
-  print_r($dc->get_all());
+  print_r($symdao->get_symptom_by_name("pain"));
 
 
 
