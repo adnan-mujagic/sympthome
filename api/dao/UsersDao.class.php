@@ -22,6 +22,10 @@ class UsersDao extends BaseDao{
     return $this->query($query, ["name"=>$name]);
   }
 
+  public function get_user_by_token($token){
+    return $this->query_single("SELECT * FROM users WHERE token=:token",["token"=>$token]);
+  }
+
 
 }
 
