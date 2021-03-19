@@ -80,8 +80,24 @@ class BaseDao{
     return $this->query_single("SELECT * FROM ".$this->table." WHERE id=:id",["id"=>$id]);
   }
 
-  public function get_all($offset = 0, $limit = 25){
-    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET {$offset}", []);
+  public function get_all($offset = 0, $limit = 25, $order="-id"){
+    $direction=NULL;
+    $column=substr($order,1);
+    switch(substr($order,0,1)){
+      case "-":
+        $direction="ASC";
+        break;
+      case "+":
+        $direction="DESC";
+        break;
+      default:throw new Exception("Invalid order parameter, you should use + (descending) or - (ascending) as first character to indicate the direction.");
+        break;
+    }
+    $sql = "SELECT * FROM ".$this->table." ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
+    print_r($sql);
+
+    return $this->query($sql,[]);
+
   }
 
 
