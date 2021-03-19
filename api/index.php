@@ -10,6 +10,8 @@ require_once dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/SymptomService.class.php";
 
+Flight::set('flight.log_errors', TRUE);
+
 //Register Classes Here
 Flight::register("user","UsersDao");
 Flight::register("userService","UserService");
