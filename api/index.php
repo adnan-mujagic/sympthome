@@ -15,8 +15,12 @@ Flight::register("user","UsersDao");
 Flight::register("userService","UserService");
 Flight::register("symptomService", "SymptomService");
 
+/*Error exception function*/
+Flight::map("error",function(Exception $e){
+  Flight::json($e->getMessage(),$e->getCode());
+});
 
-
+/*Utility function to return query parameters*/
 Flight::map("query",function($name,$default_value=NULL){
   $request = Flight::request();
   $query_param = @$request->query->getData()[$name];
