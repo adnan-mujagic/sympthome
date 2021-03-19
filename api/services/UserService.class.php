@@ -13,7 +13,27 @@
       $data["token"]=md5(random_bytes(16));
 
       // TODO: SEND EMAIL
-      return $this->add($data);
+      try {
+        $this->dao->beginTransaction();
+        $data=$this->add($data);
+        $this->dao->commit();
+        return $data;
+
+      } catch (\Exception $e) {
+        $this->dao->rollback();
+        //HERE WE CAN CHECK IF THE PROBLEM IS A DUPLICATE ENTRY IN TERMS OF EMAIL
+        //BY CHECKING THE STRING OF THE ERROR MESSAGE, AND IN THAT CASE WE CAN THROW
+        //ANOTHER ERROR WITH A CUSTOM, USER FRIENDLY MESSAGE
+        if(str_contains($e->getMessage(),"Duplicate entry")){
+          throw new Exception("There is already a user with email: ".$data["email"].". Please try another email address.", 400, $e);
+        }
+        throw $e;
+
+
+      }
+
+
+
     }
 
     public function get_users($search,$offset,$limit,$order){
