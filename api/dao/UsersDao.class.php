@@ -16,24 +16,15 @@ class UsersDao extends BaseDao{
   }
 
   public function get_user_by_name($name, $offset, $limit,$order){
-    $column = substr($order,1);
-    switch (substr($order,0,1)) {
-      case "+":
-        $direction = "DESC";
-        break;
-      case "-":
-        $direction = "ASC";
-        break;
-      default:
-        // code...
-        throw new Exception("Invalid order parameter, you should use +(descending) or - (ascending) before the column name to indicate the direction of order");
-    }
+
+    list($column, $direction) = parent::parse_order($order);
+
     $query = "SELECT * FROM users
               WHERE LOWER(first_name) LIKE LOWER(CONCAT('%',:name,'%'))
               OR LOWER(last_name) LIKE LOWER(CONCAT('%',:name,'%'))
               ORDER BY ".$column." ".$direction."
               LIMIT ".$limit." OFFSET ".$offset;
-              
+
     return $this->query($query, ["name"=>$name]);
   }
 
