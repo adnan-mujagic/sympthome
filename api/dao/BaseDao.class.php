@@ -14,11 +14,42 @@ class BaseDao{
       // set the PDO error mode to exception
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
     } catch(PDOException $e) {
       throw $e;
     }
 
 
+  }
+
+  public function beginTransaction(){
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT,0);
+    $this->connection->beginTransaction();
+  }
+
+  public function commit(){
+    $this->connection->commit();
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
+  }
+
+  public function rollback(){
+    $this->connection->rollback();
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
+  }
+
+  public static function parse_order($order){
+    $column=substr($order,1);
+    switch(substr($order,0,1)){
+      case "-":
+        $direction="ASC";
+        break;
+      case "+":
+        $direction="DESC";
+        break;
+      default:throw new Exception("Invalid order parameter, you should use + (descending) or - (ascending) as first character to indicate the direction.");
+        break;
+    }
+    return [$column, $direction];
   }
 
   protected function insert($table, $entity){
@@ -81,18 +112,9 @@ class BaseDao{
   }
 
   public function get_all($offset = 0, $limit = 25, $order="-id"){
-    $direction=NULL;
-    $column=substr($order,1);
-    switch(substr($order,0,1)){
-      case "-":
-        $direction="ASC";
-        break;
-      case "+":
-        $direction="DESC";
-        break;
-      default:throw new Exception("Invalid order parameter, you should use + (descending) or - (ascending) as first character to indicate the direction.");
-        break;
-    }
+
+    list($column, $direction) = self::parse_order($order);
+
     $sql = "SELECT * FROM ".$this->table." ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
     print_r($sql);
 
