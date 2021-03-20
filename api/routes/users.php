@@ -10,7 +10,7 @@ Flight::route("GET /users",function(){
   $search = Flight::query("search");
   $order = Flight::query("order","-id");
 
-  Flight::userService()->get_users($search,$offset,$limit,$order);
+  Flight::json(Flight::userService()->get_users($search,$offset,$limit,$order));
 });
 
 Flight::route("GET /users/@id",function($id){
@@ -38,7 +38,7 @@ Flight::route("GET /users/@id/diseases", function($id){
 
 Flight::route("PUT /users/confirm/@token",function($token){
   Flight::json(Flight::userService()->confirm($token));
-})
+});
 
 
  ?>
