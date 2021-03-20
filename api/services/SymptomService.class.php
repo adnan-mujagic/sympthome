@@ -7,10 +7,12 @@ class SymptomService extends BaseService{
     parent::__construct(new SymptomsDao());
   }
 
-  public function get_symptoms_by_name($name){
-    $query = "SELECT * FROM symptoms
+  public function get_symptoms_by_name($name,$offset = 0, $limit = 25, $order="-id"){
+
+    return $this->dao->get_symptoms_by_name($name,$offset,$limit,$order);
+    /*$query = "SELECT * FROM symptoms
               WHERE LOWER(name) LIKE LOWER(CONCAT('%',:name,'%'))";
-    return $this->query($query,["name"=>$name]);
+    return $this->query($query,["name"=>$name]);*/
   }
 }
 
