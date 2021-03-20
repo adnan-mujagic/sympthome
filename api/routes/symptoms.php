@@ -1,11 +1,14 @@
 <?php
 Flight::route("GET /symptoms", function(){
   $search = Flight::query("search");
+  $offset = Flight::query("offset",0);
+  $limit = Flight::query("limit",10);
+  $order = Flight::query("order","-id");
   if($search){
-    Flight::json(Flight::symptomService()->get_symptoms_by_name($search));
+    Flight::json(Flight::symptomService()->get_symptoms_by_name($search,$offset,$limit,$order));
   }
   else{
-    Flight::json(Flight::symptomService()->get_all());
+    Flight::json(Flight::symptomService()->get_all($offset,$limit,$order));
   }
 
 });
