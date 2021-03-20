@@ -100,7 +100,22 @@ class BaseDao{
   }
 
   public function add($entity){
-    return $this->insert($this->table, $entity);
+    try {
+      return $this->insert($this->table, $entity);
+    } catch (\Exception $e) {
+      //HERE WE CAN HANDLE VARIOUS COMMON ERRORS SO THAT WE CAN RETURN A NOT SO CREEPY MESSAGE TO THE USER
+      if(str_contains($e->getMessage(),'fk_diseases_disease_category_id')){
+        throw new Exception("The disease category does not exist",400,$e);
+      }
+      else if(str_contains($e->getMessage(),"doesn't have a default value")){
+        throw new Exception("You are missing one or more of the required fields",400,$e);
+      }
+      else{
+        throw $e;
+      }
+    }
+
+
   }
 
   public function update($updates, $id){
