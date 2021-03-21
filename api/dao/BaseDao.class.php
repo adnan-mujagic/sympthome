@@ -137,6 +137,15 @@ class BaseDao{
 
   }
 
+  //A GLOBAL FUNCTION TO SEARCH FOR ANY ENTITY AS LONG AS YOU ONLY HAVE TO SEARCH IN ONE COLUMN
+  public function get_entity_by_search($search,$offset,$limit,$order,$search_column="name"){
+    list($column,$direction) = self::parse_order($order);
+
+    $query = "SELECT * FROM ".$this->table." WHERE LOWER(".$search_column.") LIKE LOWER(CONCAT('%',:search,'%')) ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
+
+    return $this->query($query,array("search"=>$search));
+  }
+
 
 
 
