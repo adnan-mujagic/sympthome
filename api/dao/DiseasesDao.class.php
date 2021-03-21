@@ -12,13 +12,15 @@ class DiseasesDao extends BaseDao{
     return $this->query_single("SELECT * FROM diseases WHERE id=:id",array("id"=>$id));
   }
 
+  //THIS FUNCTION IS NOT NEEDED ANYMORE
+  /*
   public function get_diseases_by_name($name,$offset,$limit,$order){
     list($column,$direction) = parent::parse_order($order);
     return $this->query("SELECT * FROM diseases
                          WHERE LOWER(name) LIKE LOWER(CONCAT('%',:name,'%'))
                          ORDER BY ".$column." ".$direction."
                          LIMIT ".$limit." OFFSET ".$offset,array("name"=>$name));
-  }
+  }*/
 
 }
 

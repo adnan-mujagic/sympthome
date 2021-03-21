@@ -13,4 +13,20 @@ Flight::route("GET /medicines",function(){
   }
 });
 
+Flight::route("GET /medicines/@id",function($id){
+  Flight::json(Flight::medicineService()->get_by_id($id));
+});
+
+Flight::route("POST /medicines",function(){
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::medicineService()->add($data));
+});
+
+Flight::route("PUT /medicines/@id",function($id){
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::medicineService()->update($data,$id));
+});
+
+
+
  ?>
