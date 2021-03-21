@@ -11,6 +11,7 @@ require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/SymptomService.class.php";
 require_once dirname(__FILE__)."/services/DiseaseService.class.php";
 require_once dirname(__FILE__)."/services/MedicineService.class.php";
+require_once dirname(__FILE__)."/services/BodyPartService.class.php";
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -20,6 +21,7 @@ Flight::register("userService","UserService");
 Flight::register("symptomService", "SymptomService");
 Flight::register("diseaseService", "DiseaseService");
 Flight::register("medicineService","MedicineService");
+Flight::register("bodyPartService", "BodyPartService");
 
 /*Error exception function
 Flight::map("error",function(Exception $e){
@@ -39,6 +41,7 @@ require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/symptoms.php";
 require_once dirname(__FILE__)."/routes/diseases.php";
 require_once dirname(__FILE__)."/routes/medicines.php";
+require_once dirname(__FILE__)."/routes/bodyparts.php";
 
 
 
