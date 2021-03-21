@@ -10,6 +10,7 @@ require_once dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/SymptomService.class.php";
 require_once dirname(__FILE__)."/services/DiseaseService.class.php";
+require_once dirname(__FILE__)."/services/MedicineService.class.php";
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -18,6 +19,7 @@ Flight::register("user","UsersDao");
 Flight::register("userService","UserService");
 Flight::register("symptomService", "SymptomService");
 Flight::register("diseaseService", "DiseaseService");
+Flight::register("medicineService","MedicineService");
 
 /*Error exception function
 Flight::map("error",function(Exception $e){
@@ -36,6 +38,7 @@ Flight::map("query",function($name,$default_value=NULL){
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/symptoms.php";
 require_once dirname(__FILE__)."/routes/diseases.php";
+require_once dirname(__FILE__)."/routes/medicines.php";
 
 
 
