@@ -3,8 +3,11 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
-  require_once dirname(__FILE__). "/dao/UsersDao.class.php";
-  require_once dirname(__FILE__)."/dao/SymptomsDao.class.php";
+
+
+
+
+/*  require_once dirname(__FILE__)."/dao/SymptomsDao.class.php";
   require_once dirname(__FILE__)."/dao/MedicinesDao.class.php";
   require_once dirname(__FILE__)."/dao/DiseasesDao.class.php";
   require_once dirname(__FILE__)."/dao/BodyPartsDao.class.php";
@@ -47,6 +50,8 @@
 
 
   print_r($symdao->get_symptom_by_name("pain"));
+
+*/
 
 
 

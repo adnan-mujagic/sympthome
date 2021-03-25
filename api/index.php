@@ -36,6 +36,16 @@ Flight::map("query",function($name,$default_value=NULL){
   return $query_param;
 
 });
+
+Flight::route("GET /documentation", function(){
+  $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
+  header('Content-Type: application/json');
+  echo $openapi->toJson();
+});
+
+Flight::route("GET /", function(){
+  Flight::redirect("/docs");
+});
 //Here we need to add the routes that are placed in the other folder...
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/symptoms.php";
