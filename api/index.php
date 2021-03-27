@@ -25,7 +25,7 @@ Flight::register("bodyPartService", "BodyPartService");
 
 /*Error exception function
 Flight::map("error",function(Exception $e){
-  Flight::json(["message"=>$e->getMessage()],$e->getCode());
+  Flight::json(["message"=>$e->getMessage()],$e->getCode() ? $e->getCode() : 500);
 });*/
 
 /*Utility function to return query parameters*/

@@ -3,6 +3,9 @@
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
+<<?php
+print_r($_SERVER["REQUEST_URI"]);
+ ?>
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="/api/docs/swagger-ui.css">
     <link rel="stylesheet" type="text/css" href="/api/docs/custom-swagger.css">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
     <style>
         html {
             box-sizing: border-box;
