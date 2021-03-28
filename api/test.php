@@ -3,7 +3,14 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
+  require_once dirname(__FILE__)."/clients/SMTPClient.class.php";
+  require_once dirname(__FILE__)."/dao/UsersDao.class.php";
 
+  $smtp = new SMTPClient();
+  $smtp->test();
+  die;
+  $userdao = new UsersDao();
+  $smtp->send_confirmation_email($userdao->get_by_id(1));
 
 
 

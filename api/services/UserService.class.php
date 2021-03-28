@@ -2,10 +2,13 @@
   require_once dirname(__FILE__)."/../dao/UsersDao.class.php";
   require_once dirname(__FILE__)."/BaseService.class.php";
   require_once dirname(__FILE__)."/../config.php";
+  require_once dirname(__FILE__)."/../clients/SMTPClient.class.php";
 
   class UserService extends BaseService{
+    protected $smtp;
     public function __construct(){
       parent::__construct(new UsersDao());
+      $this->smtp = new SMTPClient();
     }
 
     public function register($data){
@@ -16,6 +19,8 @@
       try {
         $this->dao->beginTransaction();
         $data=$this->add($data);
+
+        $this->smtp->send_confirmation_email($data);
         $this->dao->commit();
         return $data;
 
@@ -69,6 +74,7 @@
       $user = $this->dao->get_user_by_token($token);
       if($user){
         $this->update(["status"=>"ACTIVE"],$user["id"]);
+        $this->smtp->send_activation_successful_email($user);
         return $this->get_by_id($user["id"]);
 
       }
