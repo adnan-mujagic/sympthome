@@ -95,6 +95,16 @@
       return $user;
     }
 
+    public function forgot($data){
+      $user = $this->dao->get_user_by_email($data["email"]);
+      if(!isset($user)){
+        throw new Exception("User does not exist!",400);
+      }
+
+      $this->dao->update(["token"=>md5(random_bytes(16))],$user["id"]);
+      $this->smtp->send_passowrd_recovery_token_email($this->dao->get_user_by_email($data["email"]));
+    }
+
 
 
 

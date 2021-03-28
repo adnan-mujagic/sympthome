@@ -31,5 +31,17 @@ class SMTPClient{
     $result = $this->mailer->send($message);
     return $result;
   }
+
+
+  public function send_passowrd_recovery_token_email($user){
+    // Create a message
+    $message = (new Swift_Message('Reset Your Password'))
+      ->setFrom(['adnanmujagic@outlook.com' => 'Sympthome'])
+      ->setTo([$user["email"]=>$user["first_name"]])
+      ->setBody('Hello, '.$user["first_name"].", please visit this link to reset your password: http://localhost:8080/api/users/confirm/".$user["token"]);
+
+    $result = $this->mailer->send($message);
+    return $result;
+  }
 }
  ?>

@@ -79,8 +79,28 @@ Flight::route("POST /users/register",function(){
 */
 Flight::route("POST /users/login", function(){
   $data=Flight::request()->data->getData();
+  Flight::userService()->login($data);
+  Flight::json(["message"=>"Log in successful!"]);
+});
 
-  Flight::json(Flight::userService()->login($data));
+
+/**
+*@OA\Post(path="/users/forgot",tags={"Users"},
+* @OA\RequestBody(required = true,
+*   @OA\MediaType(
+*     mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(type="string",property="email",example="adnanmujagic@outlook.com"),
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Forgot Password?"))
+*
+*/
+Flight::route("POST /users/forgot", function(){
+  $data=Flight::request()->data->getData();
+  Flight::userService()->forgot($data);
+  Flight::json(["message"=>"Reset link sent!"]);
 });
 
 
