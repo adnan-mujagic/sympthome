@@ -58,7 +58,29 @@ Flight::route("GET /users/@id",function($id){
 */
 Flight::route("POST /users/register",function(){
   $data = Flight::request()->data->getData();
-  Flight::json(Flight::userService()->register($data));
+  Flight::userService()->register($data);
+  Flight::json(["message"=>"Confirmation email has been sent to your email address! Please confirm it before you continue!"]);
+});
+
+
+/**
+*@OA\Post(path="/users/login",tags={"Users"},
+* @OA\RequestBody(required = true,
+*   @OA\MediaType(
+*     mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(type="string",property="email",example="adnanmujagic@outlook.com"),
+*       @OA\Property(type="string",property="password",example="verystrongpassword"),
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Log In!"))
+*
+*/
+Flight::route("POST /users/login", function(){
+  $data=Flight::request()->data->getData();
+
+  Flight::json(Flight::userService()->login($data));
 });
 
 
@@ -109,9 +131,11 @@ Flight::route("GET /users/@id/diseases", function($id){
 * @OA\Response(response="200",description="Updates a user with such token to active!"))
 *
 */
-Flight::route("PUT /users/confirm/@token",function($token){
+Flight::route("/users/confirm/@token",function($token){
   Flight::json(Flight::userService()->confirm($token));
 });
+
+
 
 
  ?>

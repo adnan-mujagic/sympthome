@@ -14,6 +14,7 @@
     public function register($data){
       $data["created_at"]=date(Config::DATE_FORMAT);
       $data["token"]=md5(random_bytes(16));
+      $data["password"]=md5($data["password"]);
 
       // TODO: SEND EMAIL
       try {
@@ -78,6 +79,20 @@
         return $this->get_by_id($user["id"]);
 
       }
+    }
+
+    public function login($data){
+      $user = $this->dao->get_user_by_email($data["email"]);
+      if(!isset($user["id"])){
+        throw new Exception("User with that email does not exist in our database!",400);
+      }
+      if($user["status"]!="ACTIVE"){
+        throw new Exception("That email address is not confirmed! Confirm your email before accessing your account!",400);
+      }
+      if($user["password"]!=md5($data["password"])){
+        throw new Exception("Invalid password!",400);
+      }
+      return $user;
     }
 
 

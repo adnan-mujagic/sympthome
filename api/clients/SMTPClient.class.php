@@ -16,7 +16,7 @@ class SMTPClient{
     $message = (new Swift_Message('Activate Your Account'))
       ->setFrom(['adnanmujagic@outlook.com' => 'Sympthome'])
       ->setTo([$user["email"]=>$user["first_name"]])
-      ->setBody('Hello, '.$user["first_name"].", please visit this link to activate your account: https://localhost:8080/api/users/confirm/".$user["token"]);
+      ->setBody('Hello, '.$user["first_name"].", please visit this link to activate your account: http://localhost:8080/api/users/confirm/".$user["token"]);
 
     $result = $this->mailer->send($message);
     return $result;
