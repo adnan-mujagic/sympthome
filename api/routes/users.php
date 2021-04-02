@@ -105,6 +105,27 @@ Flight::route("POST /users/forgot", function(){
 
 
 /**
+*@OA\Put(path="/users/reset",tags={"Users"},
+* @OA\RequestBody(required = true,
+*   @OA\MediaType(
+*     mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(type="string",property="token",example="123"),
+*       @OA\Property(type="string",property="password", example="123")
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Forgot Password?"))
+*
+*/
+Flight::route("PUT /users/reset", function(){
+  $data = Flight::request()->data->getData();
+  Flight::userService()->reset($data);
+  Flight::json(["message"=>"Password successfully updated."]);
+});
+
+
+/**
 *@OA\Put(path="/users/{id}",tags={"Users"},
 * @OA\RequestBody(required=true,
 *   @OA\MediaType(mediaType="application/json",

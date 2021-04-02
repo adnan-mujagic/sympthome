@@ -14,6 +14,7 @@
     public function register($data){
       $data["created_at"]=date(Config::DATE_FORMAT);
       $data["token"]=md5(random_bytes(16));
+      $data["token_created_at"]=date(Config::DATE_FORMAT);
       $data["password"]=md5($data["password"]);
 
       // TODO: SEND EMAIL
@@ -74,7 +75,7 @@
     public function confirm($token){
       $user = $this->dao->get_user_by_token($token);
       if($user){
-        $this->update(["status"=>"ACTIVE"],$user["id"]);
+        $this->update(["status"=>"ACTIVE","token"=>NULL],$user["id"]);
         $this->smtp->send_activation_successful_email($user);
         return $this->get_by_id($user["id"]);
 
@@ -101,8 +102,23 @@
         throw new Exception("User does not exist!",400);
       }
 
-      $this->dao->update(["token"=>md5(random_bytes(16))],$user["id"]);
+      if(strtotime(date(Config::DATE_FORMAT))-strtotime($user["token_created_at"])<5*60){
+        throw new Exception("Your token generation cooldown has not expired yet, try again in 5 mins!",400);
+      }
+
+      $this->dao->update(["token"=>md5(random_bytes(16)), "token_created_at"=>date(Config::DATE_FORMAT)],$user["id"]);
       $this->smtp->send_passowrd_recovery_token_email($this->dao->get_user_by_email($data["email"]));
+    }
+
+    public function reset($data){
+      $user = $this->dao->get_user_by_token($data["token"]);
+      if(!isset($user)){
+        throw new Exception("There is no user with that token!",400);
+      }
+      if(strtotime(date(Config::DATE_FORMAT))-strtotime($user["token_created_at"])>5*60){
+        throw new Exception("Token expired!");
+      }
+      $this->dao->update(["password"=>md5($data["password"])],$user["id"]);
     }
 
 
