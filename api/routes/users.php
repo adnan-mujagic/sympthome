@@ -3,7 +3,8 @@
  * @OA\Info(title="SymptHome API", version="0.2")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost:8080/api/", description="Development Environment" ),
- * )
+ * ),
+ * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
 
 
@@ -30,13 +31,33 @@ Flight::route("GET /users",function(){
 });
 
 /**
- *@OA\Get(path="/users/{id}",tags={"Users"},
+ *@OA\Get(path="/users/byId/{id}",tags={"Users"},security={{"ApiKeyAuth": {}}},
  *  @OA\Parameter(@OA\Schema(type="integer"),in="path",allowReserved=true,name="id",example=1),
  *  @OA\Response(response="200", description="Returns account by id!"),
  *)
  */
-Flight::route("GET /users/@id",function($id){
-  Flight::json(Flight::userService()->get_by_id($id));
+Flight::route("GET /users/byId/@id",function($id){
+  if(Flight::get("user")["id"]==$id){
+    Flight::json(Flight::userService()->get_by_id($id));
+
+  }
+  else{
+    Flight::json(["message"=>"Nice try hackerman!"]);
+  }
+
+
+
+  /*if(Flight::get("user")["id"]==$id){
+    Flight::json(Flight::request());die;
+    Flight::json(Flight::userService()->get_by_id($id));
+  /*}
+  else{
+    Flight::json(["message"=>"You cannot view other people's accounts!"]);
+  }*/
+
+
+
+
 });
 
 /**

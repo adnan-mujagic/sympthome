@@ -47,6 +47,7 @@ Flight::route("GET /", function(){
   Flight::redirect("/docs");
 });
 //Here we need to add the routes that are placed in the other folder...
+require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/symptoms.php";
 require_once dirname(__FILE__)."/routes/diseases.php";
