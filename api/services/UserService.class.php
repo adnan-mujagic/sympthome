@@ -4,6 +4,8 @@
   require_once dirname(__FILE__)."/../config.php";
   require_once dirname(__FILE__)."/../clients/SMTPClient.class.php";
 
+  use \Firebase\JWT\JWT;
+
   class UserService extends BaseService{
     protected $smtp;
     public function __construct(){
@@ -93,7 +95,11 @@
       if($user["password"]!=md5($data["password"])){
         throw new Exception("Invalid password!",400);
       }
-      return $user;
+
+      $jwt = JWT::encode(["id"=>$user["id"], "role"=>$user["type"],], "SECRET");
+
+      return ["token"=>$jwt];
+      
     }
 
     public function forgot($data){

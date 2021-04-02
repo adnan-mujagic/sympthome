@@ -79,8 +79,7 @@ Flight::route("POST /users/register",function(){
 */
 Flight::route("POST /users/login", function(){
   $data=Flight::request()->data->getData();
-  Flight::userService()->login($data);
-  Flight::json(["message"=>"Log in successful!"]);
+  Flight::json([Flight::userService()->login($data)]);
 });
 
 
