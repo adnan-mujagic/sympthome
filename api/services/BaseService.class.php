@@ -19,6 +19,10 @@
     }
 
     public function update($updates, $id){
+      //Makes sure that if you are updating the password, in that case it gets hashed!
+      if(isset($updates["password"])){
+        $updates["password"] = md5($updates["password"]);
+      }
       return $this->dao->update($updates,$id);
     }
 
