@@ -181,14 +181,7 @@ Flight::route("PUT /admin/users/@id",function($id){
   Flight::json(Flight::userService()->get_by_id($id));
 });
 
-/**
-*@OA\Get(path="/users/symptoms",tags={"Users"},security={{"ApiKeyAuth": {}}},
-* @OA\Response(response="200",description="Return symptoms of a logged in user!"))
-*
-*/
-Flight::route("GET /users/symptoms", function(){
-  Flight::json(Flight::userService()->get_user_symptoms(Flight::get("user")["id"]));
-});
+
 
 
 /**
