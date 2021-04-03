@@ -23,6 +23,10 @@ class MedicineService extends BaseService{
     ];
     return $this->dao->add($medicine);
   }
+
+  public function get_user_medicines($user_id, $offset, $limit, $order, $search){
+    return $this->dao->get_user_medicines($user_id, $offset, $limit, $order, $search);
+  }
 }
 
 

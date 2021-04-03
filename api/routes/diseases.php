@@ -81,7 +81,7 @@ Flight::route("PUT /admin/diseases/@id",function($id){
 *   @OA\Parameter(type="integer", in="query", name="limit",example="20",description="Limit for pages!"),
 *   @OA\Parameter(type="string", in="query", name="search",description="Case insensitive search function!"),
 *   @OA\Parameter(type="string", in="query", name="order",example="-id", description ="Choose the order of your results ex. -id will return the results ordered by id, ascending!"),
-* @OA\Response(response="200",description="Return symptoms of a logged in user!"))
+* @OA\Response(response="200",description="Returns diseases of a logged in user!"))
 *
 */
 Flight::route("GET /users/diseases", function(){

@@ -75,6 +75,23 @@ Flight::route("PUT /admin/medicines/@id",function($id){
   Flight::json(Flight::medicineService()->update($data,$id));
 });
 
+/**
+*@OA\Get(path="/users/medicines",tags={"Medicines","Users"},security={{"ApiKeyAuth": {}}},
+*   @OA\Parameter(type="integer",in="query",name="offset",example="0",description="Offset for pages!"),
+*   @OA\Parameter(type="integer", in="query", name="limit",example="20",description="Limit for pages!"),
+*   @OA\Parameter(type="string", in="query", name="search",description="Case insensitive search function!"),
+*   @OA\Parameter(type="string", in="query", name="order",example="-id", description ="Choose the order of your results ex. -id will return the results ordered by id, ascending!"),
+* @OA\Response(response="200",description="Return medicines of a logged in user!"))
+*
+*/
+Flight::route("GET /users/medicines", function(){
+  $search = Flight::query("search");
+  $offset = Flight::query("offset",0);
+  $limit = Flight::query("limit",20);
+  $order = Flight::query("order","-id");
+  Flight::json(Flight::medicineService()->get_user_medicines(Flight::get("user")["id"],$offset, $limit,$order, $search));
+});
+
 
 
  ?>
