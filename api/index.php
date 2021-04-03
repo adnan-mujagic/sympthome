@@ -12,6 +12,7 @@ require_once dirname(__FILE__)."/services/SymptomService.class.php";
 require_once dirname(__FILE__)."/services/DiseaseService.class.php";
 require_once dirname(__FILE__)."/services/MedicineService.class.php";
 require_once dirname(__FILE__)."/services/BodyPartService.class.php";
+require_once dirname(__FILE__)."/config.php";
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -34,6 +35,12 @@ Flight::map("query",function($name,$default_value=NULL){
   $query_param = @$request->query->getData()[$name];
   $query_param = $query_param ? $query_param : $default_value;
   return $query_param;
+
+});
+
+/*Flight general function that returns decoded Authentication token*/
+Flight::map("header", function($name){
+  return @getallheaders()[$name];
 
 });
 
