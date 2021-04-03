@@ -9,7 +9,7 @@
 
 
  /**
-  * @OA\Get(path="/users", tags={"Users"},
+  * @OA\Get(path="/admin/users", tags={"Users", "Admin"},security={{"ApiKeyAuth": {}}},
   *   @OA\Parameter(type="integer",in="query",name="offset",example="0",description="Offset for pages!"),
   *   @OA\Parameter(type="integer", in="query", name="limit",example="20",description="Limit for pages!"),
   *   @OA\Parameter(type="string", in="query", name="search",description="Case insensitive search function!"),
@@ -18,7 +18,7 @@
   *
   * )
   */
-Flight::route("GET /users",function(){
+Flight::route("GET /admin/users",function(){
 
   //Flight::json(Flight::user()->get_all());
 
@@ -31,37 +31,26 @@ Flight::route("GET /users",function(){
 });
 
 /**
- *@OA\Get(path="/users/byId/{id}",tags={"Users"},security={{"ApiKeyAuth": {}}},
+ *@OA\Get(path="/users",tags={"Users"},security={{"ApiKeyAuth": {}}},
+ *  @OA\Response(response="200", description="Returns logged in users account!"),
+ *)
+ */
+Flight::route("GET /users",function(){
+  Flight::json(Flight::userService()->get_by_id(Flight::get("user")["id"]));
+});
+
+/**
+ *@OA\Get(path="/admin/users/{id}",tags={"Users", "Admin"},security={{"ApiKeyAuth": {}}},
  *  @OA\Parameter(@OA\Schema(type="integer"),in="path",allowReserved=true,name="id",example=1),
  *  @OA\Response(response="200", description="Returns account by id!"),
  *)
  */
-Flight::route("GET /users/byId/@id",function($id){
-  if(Flight::get("user")["id"]==$id){
+Flight::route("GET /admin/users/@id",function($id){
     Flight::json(Flight::userService()->get_by_id($id));
-
-  }
-  else{
-    Flight::json(["message"=>"Nice try hackerman!"]);
-  }
-
-
-
-  /*if(Flight::get("user")["id"]==$id){
-    Flight::json(Flight::request());die;
-    Flight::json(Flight::userService()->get_by_id($id));
-  /*}
-  else{
-    Flight::json(["message"=>"You cannot view other people's accounts!"]);
-  }*/
-
-
-
-
 });
 
 /**
-*@OA\Post(path="/users/register",tags={"Users"},
+*@OA\Post(path="/register",tags={"Users"},
 * @OA\RequestBody(required = true,
 *   @OA\MediaType(
 *     mediaType="application/json",
@@ -77,7 +66,7 @@ Flight::route("GET /users/byId/@id",function($id){
 * @OA\Response(response="200",description="Create a new user in the database!"))
 *
 */
-Flight::route("POST /users/register",function(){
+Flight::route("POST /register",function(){
   $data = Flight::request()->data->getData();
   Flight::userService()->register($data);
   Flight::json(["message"=>"Confirmation email has been sent to your email address! Please confirm it before you continue!"]);
@@ -85,27 +74,27 @@ Flight::route("POST /users/register",function(){
 
 
 /**
-*@OA\Post(path="/users/login",tags={"Users"},
+*@OA\Post(path="/login",tags={"Users"},
 * @OA\RequestBody(required = true,
 *   @OA\MediaType(
 *     mediaType="application/json",
 *     @OA\Schema(
 *       @OA\Property(type="string",property="email",example="adnanmujagic@outlook.com"),
-*       @OA\Property(type="string",property="password",example="verystrongpassword"),
+*       @OA\Property(type="string",property="password",example="123"),
 *   )
 * )
 *),
 * @OA\Response(response="200",description="Log In!"))
 *
 */
-Flight::route("POST /users/login", function(){
+Flight::route("POST /login", function(){
   $data=Flight::request()->data->getData();
   Flight::json([Flight::userService()->login($data)]);
 });
 
 
 /**
-*@OA\Post(path="/users/forgot",tags={"Users"},
+*@OA\Post(path="/forgot",tags={"Users"},
 * @OA\RequestBody(required = true,
 *   @OA\MediaType(
 *     mediaType="application/json",
@@ -117,7 +106,7 @@ Flight::route("POST /users/login", function(){
 * @OA\Response(response="200",description="Forgot Password?"))
 *
 */
-Flight::route("POST /users/forgot", function(){
+Flight::route("POST /forgot", function(){
   $data=Flight::request()->data->getData();
   Flight::userService()->forgot($data);
   Flight::json(["message"=>"Reset link sent!"]);
@@ -125,7 +114,7 @@ Flight::route("POST /users/forgot", function(){
 
 
 /**
-*@OA\Put(path="/users/reset",tags={"Users"},
+*@OA\Put(path="/reset",tags={"Users"},
 * @OA\RequestBody(required = true,
 *   @OA\MediaType(
 *     mediaType="application/json",
@@ -138,15 +127,43 @@ Flight::route("POST /users/forgot", function(){
 * @OA\Response(response="200",description="Forgot Password?"))
 *
 */
-Flight::route("PUT /users/reset", function(){
+Flight::route("PUT /reset", function(){
   $data = Flight::request()->data->getData();
   Flight::userService()->reset($data);
   Flight::json(["message"=>"Password successfully updated."]);
 });
 
+/**
+*@OA\Put(path="/confirm/{token}",tags={"Users"},
+* @OA\Parameter(@OA\Schema(type="string"),allowReserved=true, in="path", name ="token"),
+* @OA\Response(response="200",description="Updates a user with such token to active!"))
+*
+*/
+Flight::route("/confirm/@token",function($token){
+  Flight::json(Flight::userService()->confirm($token));
+});
+
 
 /**
-*@OA\Put(path="/users/{id}",tags={"Users"},
+*@OA\Put(path="/users",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\RequestBody(required=true,
+*   @OA\MediaType(mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(property="password",example="verystrongpassword")
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Update a logged in user in the database!"))
+*
+*/
+Flight::route("PUT /users",function(){
+  $data=Flight::request()->data->getData();
+  Flight::userService()->update($data,Flight::get("user")["id"]);
+  Flight::json(Flight::userService()->get_by_id(Flight::get("user")["id"]));
+});
+
+/**
+*@OA\Put(path="/admin/users/{id}",tags={"Users", "Admin"},security={{"ApiKeyAuth": {}}},
 * @OA\RequestBody(required=true,
 *   @OA\MediaType(mediaType="application/json",
 *     @OA\Schema(
@@ -155,46 +172,80 @@ Flight::route("PUT /users/reset", function(){
 * )
 *),
 * @OA\Parameter(@OA\Schema(type="integer"),allowReserved=true, in="path", example=1, name="id"),
-* @OA\Response(response="200",description="Update a user in the database!"))
+* @OA\Response(response="200",description="Update any user in the database!"))
 *
 */
-Flight::route("PUT /users/@id",function($id){
+Flight::route("PUT /admin/users/@id",function($id){
   $data=Flight::request()->data->getData();
   Flight::userService()->update($data,$id);
   Flight::json(Flight::userService()->get_by_id($id));
 });
 
 /**
-*@OA\Get(path="/users/{id}/symptoms",tags={"Users"},
-* @OA\Parameter(@OA\Schema(type="integer"),allowReserved=true, in="path", example=1, name="id"),
-* @OA\Response(response="200",description="Return symptoms of a user with the id in the path!"))
+*@OA\Get(path="/users/symptoms",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\Response(response="200",description="Return symptoms of a logged in user!"))
 *
 */
-Flight::route("GET /users/@id/symptoms", function($id){
+Flight::route("GET /users/symptoms", function(){
+  Flight::json(Flight::userService()->get_user_symptoms(Flight::get("user")["id"]));
+});
+
+
+/**
+*@OA\Get(path="/admin/users/{id}/symptoms",tags={"Users","Admin"},security={{"ApiKeyAuth": {}}},
+* @OA\Parameter(type="integer", in="path", name="id", example="1"),
+* @OA\Response(response="200",description="Return symptoms of any user!"))
+*
+*/
+Flight::route("GET /admin/users/@id/symptoms", function($id){
   Flight::json(Flight::userService()->get_user_symptoms($id));
 });
 
 
 /**
-*@OA\Get(path="/users/{id}/diseases",tags={"Users"},
-* @OA\Parameter(@OA\Schema(type="integer"),allowReserved=true, in="path", example=1, name = "id"),
-* @OA\Response(response="200",description="Return diseases of a user with the id in the path!"))
+*@OA\Get(path="/users/diseases",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\Response(response="200",description="Return diseases of a logged in user!"))
 *
 */
-Flight::route("GET /users/@id/diseases", function($id){
+Flight::route("GET /users/diseases", function(){
+  Flight::json(Flight::userService()->get_user_diseases(Flight::get("user")["id"]));
+});
+
+/**
+*@OA\Get(path="/admin/users/{id}/diseases",tags={"Users","Admin"},security={{"ApiKeyAuth": {}}},
+* @OA\Parameter(type="integer", in="path", name="id", example="1"),
+* @OA\Response(response="200",description="Return symptoms of any user!"))
+*
+*/
+Flight::route("GET /admin/users/@id/diseases", function($id){
   Flight::json(Flight::userService()->get_user_diseases($id));
 });
 
 
+
+
 /**
-*@OA\Put(path="/users/confirm/{token}",tags={"Users"},
-* @OA\Parameter(@OA\Schema(type="string"),allowReserved=true, in="path", name ="token"),
-* @OA\Response(response="200",description="Updates a user with such token to active!"))
+*@OA\Get(path="/users/medicines",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\Response(response="200",description="Return symptoms of any user!"))
 *
 */
-Flight::route("/users/confirm/@token",function($token){
-  Flight::json(Flight::userService()->confirm($token));
+Flight::route("GET /users/medicines", function(){
+  Flight::json(Flight::userService()->get_user_medicines(Flight::get("user")["id"]));
 });
+
+
+/**
+*@OA\Get(path="/admin/users/{id}/medicines",tags={"Users", "Admin"},security={{"ApiKeyAuth": {}}},
+* @OA\Parameter(type="integer", in="path", name="id", example="1"),
+* @OA\Response(response="200",description="Return symptoms of any user!"))
+*
+*/
+Flight::route("GET /admin/users/@id/medicines", function($id){
+  Flight::json(Flight::userService()->get_user_medicines($id));
+});
+
+
+
 
 
 
