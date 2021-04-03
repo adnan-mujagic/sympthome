@@ -22,6 +22,24 @@ class DiseasesDao extends BaseDao{
                          LIMIT ".$limit." OFFSET ".$offset,array("name"=>$name));
   }*/
 
+
+  public function get_user_diseases($user_id,$offset,$limit,$order,$search){
+    list($column,$direction) = $this->parse_order($order);
+    $params = [];
+    $query = "SELECT d.name, d.description, d.treatment_description, d.category_id FROM diseases d
+              JOIN symptom_disease_bodypart_log sdbl on sdbl.disease_id = d.id
+              JOIN symptoms s ON s.id = sdbl.symptom_id
+              JOIN user_symptom_log usl ON s.id = usl.symptom_id
+              JOIN users u ON u.id = usl.user_id
+              WHERE u.id = ".$user_id;
+    if(isset($search)){
+      $query= $query." AND LOWER(d.name) LIKE LOWER(CONCAT('%',:search,'%'))";
+      $params["search"]=$search;
+    }
+    $query = $query." GROUP BY d.id ORDER BY d.".$column." ".$direction.
+                    " LIMIT ".$limit." OFFSET ".$offset;
+    return $this->query($query,$params);
+  }
 }
 
  ?>

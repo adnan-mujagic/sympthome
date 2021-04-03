@@ -195,14 +195,7 @@ Flight::route("GET /admin/users/@id/symptoms", function($id){
 });
 
 
-/**
-*@OA\Get(path="/users/diseases",tags={"Users"},security={{"ApiKeyAuth": {}}},
-* @OA\Response(response="200",description="Return diseases of a logged in user!"))
-*
-*/
-Flight::route("GET /users/diseases", function(){
-  Flight::json(Flight::userService()->get_user_diseases(Flight::get("user")["id"]));
-});
+
 
 /**
 *@OA\Get(path="/admin/users/{id}/diseases",tags={"Users","Admin"},security={{"ApiKeyAuth": {}}},

@@ -22,6 +22,10 @@ class DiseaseService extends BaseService{
     return $this->dao->add($disease);
   }
 
+  public function get_user_diseases($user_id, $offset, $limit, $order, $search){
+    return $this->dao->get_user_diseases($user_id,$offset,$limit,$order,$search);
+  }
+
 }
 
 
