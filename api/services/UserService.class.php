@@ -84,6 +84,22 @@
       }
     }
 
+    public function get_user_medicines($id){
+
+
+      $query = "SELECT m.name, m.instruction, m.warning, m.side_effects, m.requires_prescription FROM medicines m
+                JOIN disease_medicine_log dml ON dml.medicine_id=m.id
+                JOIN diseases d ON d.id = dml.disease_id
+                JOIN symptom_disease_bodypart_log sdbl on sdbl.disease_id = d.id
+                JOIN symptoms s ON s.id = sdbl.symptom_id
+                JOIN user_symptom_log usl ON usl.symptom_id = s.id
+                JOIN users u ON u.id = usl.user_id
+                WHERE u.id =:id
+                GROUP BY m.id";
+
+      return $this->dao->query($query, ["id"=>$id]);
+    }
+
     public function login($data){
       $user = $this->dao->get_user_by_email($data["email"]);
       if(!isset($user["id"])){
@@ -126,6 +142,9 @@
       }
       $this->dao->update(["password"=>md5($data["password"])],$user["id"]);
     }
+
+
+
 
 
 
