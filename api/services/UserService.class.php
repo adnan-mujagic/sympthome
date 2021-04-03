@@ -96,7 +96,7 @@
         throw new Exception("Invalid password!",400);
       }
 
-      $jwt = \Firebase\JWT\JWT::encode(["id"=>$user["id"], "role"=>$user["type"],], "SECRET");
+      $jwt = \Firebase\JWT\JWT::encode(["id"=>$user["id"], "role"=>$user["type"]], Config::JWT_SECRET);
 
       return ["token"=>$jwt];
 
