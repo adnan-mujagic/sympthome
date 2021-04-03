@@ -14,6 +14,16 @@ class SymptomService extends BaseService{
               WHERE LOWER(name) LIKE LOWER(CONCAT('%',:name,'%'))";
     return $this->query($query,["name"=>$name]);*/
   }
+
+  public function add_symptom($data){
+    $symptom = [
+      "name" => $data["name"],
+      "date_added" =>date(Config::DATE_FORMAT)
+    ];
+    return $this->dao->add($symptom);
+  }
 }
+
+
 
  ?>

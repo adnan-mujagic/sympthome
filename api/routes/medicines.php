@@ -37,7 +37,7 @@ Flight::route("GET /medicines/@id",function($id){
 
 
 /**
-* @OA\Post(path="/medicines", tags={"Medicines"},
+* @OA\Post(path="/admin/medicines", tags={"Medicines", "Admin"},security={{"ApiKeyAuth": {}}},
 *   @OA\RequestBody(required=true,
 *     @OA\MediaType(mediaType="application/json",
 *       @OA\Schema(
@@ -52,13 +52,13 @@ Flight::route("GET /medicines/@id",function($id){
 * @OA\Response(response="200", description="Adds a medicine to the database!")
 *)
 */
-Flight::route("POST /medicines",function(){
+Flight::route("POST /admin/medicines",function(){
   $data = Flight::request()->data->getData();
-  Flight::json(Flight::medicineService()->add($data));
+  Flight::json(Flight::medicineService()->add_medicine($data));
 });
 
 /**
-* @OA\Put(path="/medicines/{id}", tags={"Medicines"},
+* @OA\Put(path="/admin/medicines/{id}", tags={"Medicines"},security={{"ApiKeyAuth": {}}},
 *   @OA\Parameter(type="integer",in="path", name="id", example="5", description="Id of the medicine we want to apply changes to!"),
 *   @OA\RequestBody(required=true,
 *     @OA\MediaType(mediaType="application/json",
@@ -70,7 +70,7 @@ Flight::route("POST /medicines",function(){
 * @OA\Response(response="200", description="Apply changes to a medicine with the specific id!")
 *)
 */
-Flight::route("PUT /medicines/@id",function($id){
+Flight::route("PUT /admin/medicines/@id",function($id){
   $data = Flight::request()->data->getData();
   Flight::json(Flight::medicineService()->update($data,$id));
 });

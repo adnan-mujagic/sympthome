@@ -1,6 +1,6 @@
 <?php
 /**
- * @OA\Get(path="/symptoms", tags={"Symptoms"},
+ * @OA\Get(path="/admin/symptoms", tags={"Symptoms","Admin"},security={{"ApiKeyAuth": {}}},
  *   @OA\Parameter(type="integer",in="query",name="offset",example="0",description="Offset for pages!"),
  *   @OA\Parameter(type="integer", in="query", name="limit",example="20",description="Limit for pages!"),
  *   @OA\Parameter(type="string", in="query", name="search",description="Case insensitive search function!"),
@@ -9,7 +9,7 @@
  *
  * )
  */
-Flight::route("GET /symptoms", function(){
+Flight::route("GET /admin/symptoms", function(){
   $search = Flight::query("search");
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",10);
@@ -26,18 +26,18 @@ Flight::route("GET /symptoms", function(){
 
 
 /**
- *@OA\Get(path="/symptoms/{id}",tags={"Symptoms"},
+ *@OA\Get(path="/admin/symptoms/{id}",tags={"Symptoms","Admin"},security={{"ApiKeyAuth": {}}},
  *  @OA\Parameter(@OA\Schema(type="integer"),in="path",allowReserved=true,name="id",example=1),
  *  @OA\Response(response="200", description="Returns account by id!"),
  *)
  */
 
-Flight::route("GET /symptoms/@id", function($id){
+Flight::route("GET /admin/symptoms/@id", function($id){
   Flight::json(Flight::symptomService()->get_by_id($id));
 });
 
 /**
- *@OA\Post(path="/symptoms",tags={"Symptoms"},
+ *@OA\Post(path="/admin/symptoms",tags={"Symptoms"},security={{"ApiKeyAuth": {}}},
  *  @OA\RequestBody(required=true,
  *    @OA\MediaType(mediaType="application/json",
  *      @OA\Schema(
@@ -48,13 +48,13 @@ Flight::route("GET /symptoms/@id", function($id){
  *  @OA\Response(response="200", description="Returns account by id!"),
  *)
  */
-Flight::route("POST /symptoms", function(){
+Flight::route("POST /admin/symptoms", function(){
   $data = Flight::request()->data->getData();
-  Flight::json(Flight::symptomService()->add($data));
+  Flight::json(Flight::symptomService()->add_symptom($data));
 });
 
 /**
- *@OA\Put(path="/symptoms/{id}",tags={"Symptoms"},
+ *@OA\Put(path="/admin/symptoms/{id}",tags={"Symptoms"},security={{"ApiKeyAuth": {}}},
  *  @OA\RequestBody(required=true,
  *    @OA\MediaType(mediaType="application/json",
  *      @OA\Schema(
@@ -66,7 +66,7 @@ Flight::route("POST /symptoms", function(){
  *  @OA\Response(response="200", description="Returns account by id!"),
  *)
  */
-Flight::route("PUT /symptoms/@id",function($id){
+Flight::route("PUT /admin/symptoms/@id",function($id){
   $data = Flight::request()->data->getData();
   Flight::json(Flight::symptomService()->update($data,$id));
 });

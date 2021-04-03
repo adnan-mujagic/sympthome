@@ -36,7 +36,7 @@ Flight::route("GET /diseases/@id",function($id){
 
 
 /**
-*@OA\Post(path="/diseases", tags={"Diseases"},
+*@OA\Post(path="/admin/diseases", tags={"Diseases","Admin"},security={{"ApiKeyAuth": {}}},
 * @OA\RequestBody(required=true,
 *   @OA\MediaType(mediaType="application/json",
 *     @OA\Schema(
@@ -50,13 +50,13 @@ Flight::route("GET /diseases/@id",function($id){
 * @OA\Response(response="200", description="Adding a disease to database!")
 *)
 */
-Flight::route("POST /diseases", function(){
+Flight::route("POST /admin/diseases", function(){
   $disease = Flight::request()->data->getData();
-  Flight::json(Flight::diseaseService()->add($disease));
+  Flight::json(Flight::diseaseService()->add_disesase($disease));
 });
 
 /**
-*@OA\Put(path="/diseases/{id}", tags={"Diseases"},
+*@OA\Put(path="/admin/diseases/{id}", tags={"Diseases"},security={{"ApiKeyAuth": {}}},
 * @OA\Parameter(name="id",in="path", type="string", example="21" ),
 * @OA\RequestBody(required=true,
 *   @OA\MediaType(mediaType="application/json",
@@ -68,7 +68,7 @@ Flight::route("POST /diseases", function(){
 * @OA\Response(response="200", description="Adding a disease to database!")
 *)
 */
-Flight::route("PUT /diseases/@id",function($id){
+Flight::route("PUT /admin/diseases/@id",function($id){
   $update=Flight::request()->data->getData();
   Flight::diseaseService()->update($update,$id);
   Flight::json(Flight::diseaseService()->get_by_id($id));
