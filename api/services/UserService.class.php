@@ -54,25 +54,6 @@
       }
     }
 
-    public function get_user_symptoms($user_id){
-      $query = "SELECT s.name FROM symptoms s
-                JOIN user_symptom_log usl ON usl.symptom_id=s.id
-                JOIN users u on usl.user_id=u.id
-                WHERE u.id=:user_id";
-
-      return $this->query($query, ["user_id"=>$user_id]);
-    }
-
-    public function get_user_diseases($user_id){
-      $query = "SELECT d.id, d.name, d.description, d.treatment_description FROM diseases d
-                JOIN symptom_disease_bodypart_log sdbl ON sdbl.disease_id=d.id
-                JOIN symptoms s ON s.id = sdbl.symptom_id
-                JOIN user_symptom_log usl ON usl.symptom_id = s.id
-                JOIN users u ON u.id = usl.user_id
-                WHERE u.id = :id
-                GROUP BY d.id ";
-      return $this->query($query, ["id"=>$user_id]);
-    }
 
     public function confirm($token){
       $user = $this->dao->get_user_by_token($token);
@@ -82,22 +63,6 @@
         return $this->get_by_id($user["id"]);
 
       }
-    }
-
-    public function get_user_medicines($id){
-
-
-      $query = "SELECT m.name, m.instruction, m.warning, m.side_effects, m.requires_prescription FROM medicines m
-                JOIN disease_medicine_log dml ON dml.medicine_id=m.id
-                JOIN diseases d ON d.id = dml.disease_id
-                JOIN symptom_disease_bodypart_log sdbl on sdbl.disease_id = d.id
-                JOIN symptoms s ON s.id = sdbl.symptom_id
-                JOIN user_symptom_log usl ON usl.symptom_id = s.id
-                JOIN users u ON u.id = usl.user_id
-                WHERE u.id =:id
-                GROUP BY m.id";
-
-      return $this->dao->query($query, ["id"=>$id]);
     }
 
     public function login($data){
@@ -112,7 +77,7 @@
         throw new Exception("Invalid password!",400);
       }
 
-      $jwt = \Firebase\JWT\JWT::encode(["id"=>$user["id"], "role"=>$user["type"]], Config::JWT_SECRET);
+      $jwt = Flight::jwt($user);
 
       return ["token"=>$jwt];
 

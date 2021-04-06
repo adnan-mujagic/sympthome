@@ -44,6 +44,11 @@ Flight::map("header", function($name){
 
 });
 
+//Flight function that will return a json web token (jwt) for the user in the parameters
+Flight::map("jwt",function($user){
+  return \Firebase\JWT\JWT::encode(["exp"=>time()+Config::JWT_TOKEN_TIME,"id"=>$user["id"], "role"=>$user["type"]], Config::JWT_SECRET);
+});
+
 Flight::route("GET /documentation", function(){
   $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
   header('Content-Type: application/json');
