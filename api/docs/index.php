@@ -3,9 +3,7 @@
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
-<<?php
-print_r($_SERVER["REQUEST_URI"]);
- ?>
+
 
 <head>
     <meta charset="UTF-8">
@@ -42,7 +40,7 @@ print_r($_SERVER["REQUEST_URI"]);
         window.onload = function () {
             // Begin Swagger UI call region
             const ui = SwaggerUIBundle({
-                url: "http://localhost:8080/api/documentation",
+                url: "//<?=$_SERVER["HTTP_HOST"].str_replace("docs","documentation",$_SERVER["REQUEST_URI"]) ?>",
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [
