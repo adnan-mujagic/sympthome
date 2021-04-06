@@ -3,6 +3,7 @@
  * @OA\Info(title="SymptHome API", version="0.2")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost:8080/api/", description="Development Environment" ),
+ *    @OA\Server(url="sympthome-tvldx.ondigitalocean.app/api", description="Production Environment" ),
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
@@ -187,11 +188,19 @@ Flight::route("PUT /admin/users/@id",function($id){
 /**
 *@OA\Get(path="/admin/users/{id}/symptoms",tags={"Users","Admin"},security={{"ApiKeyAuth": {}}},
 * @OA\Parameter(type="integer", in="path", name="id", example="1"),
+* @OA\Parameter(type="string", in="query", name="search", description="Search functionality!"),
+* @OA\Parameter(type="integer", in="query", name="offset", example="0"),
+* @OA\Parameter(type="integer", in="query", name="limit", example="20"),
+* @OA\Parameter(type="string", in="query", name="order", example="-id"),
 * @OA\Response(response="200",description="Return symptoms of any user!"))
 *
 */
 Flight::route("GET /admin/users/@id/symptoms", function($id){
-  Flight::json(Flight::userService()->get_user_symptoms($id));
+  $search = Flight::query("search");
+  $offset = Flight::query("offset",0);
+  $limit = Flight::query("limit",10);
+  $order = Flight::query("order","-id");
+  Flight::json(Flight::symptomService()->get_user_symptoms($id,$offset, $limit,$order, $search));
 });
 
 
@@ -200,11 +209,19 @@ Flight::route("GET /admin/users/@id/symptoms", function($id){
 /**
 *@OA\Get(path="/admin/users/{id}/diseases",tags={"Users","Admin"},security={{"ApiKeyAuth": {}}},
 * @OA\Parameter(type="integer", in="path", name="id", example="1"),
-* @OA\Response(response="200",description="Return symptoms of any user!"))
+* @OA\Parameter(type="string", in="query", name="search", description="Search functionality!"),
+* @OA\Parameter(type="integer", in="query", name="offset", example="0"),
+* @OA\Parameter(type="integer", in="query", name="limit", example="20"),
+* @OA\Parameter(type="string", in="query", name="order", example="-id"),
+* @OA\Response(response="200",description="Return diseases of any user!"))
 *
 */
 Flight::route("GET /admin/users/@id/diseases", function($id){
-  Flight::json(Flight::userService()->get_user_diseases($id));
+  $search = Flight::query("search");
+  $offset = Flight::query("offset",0);
+  $limit = Flight::query("limit",10);
+  $order = Flight::query("order","-id");
+  Flight::json(Flight::diseaseService()->get_user_diseases($id,$offset, $limit,$order, $search));
 });
 
 
@@ -213,11 +230,19 @@ Flight::route("GET /admin/users/@id/diseases", function($id){
 /**
 *@OA\Get(path="/admin/users/{id}/medicines",tags={"Users", "Admin"},security={{"ApiKeyAuth": {}}},
 * @OA\Parameter(type="integer", in="path", name="id", example="1"),
-* @OA\Response(response="200",description="Return symptoms of any user!"))
+* @OA\Parameter(type="string", in="query", name="search", description="Search functionality!"),
+* @OA\Parameter(type="integer", in="query", name="offset", example="0"),
+* @OA\Parameter(type="integer", in="query", name="limit", example="20"),
+* @OA\Parameter(type="string", in="query", name="order", example="-id"),
+* @OA\Response(response="200",description="Return medicines of any user!"))
 *
 */
 Flight::route("GET /admin/users/@id/medicines", function($id){
-  Flight::json(Flight::userService()->get_user_medicines($id));
+  $search = Flight::query("search");
+  $offset = Flight::query("offset",0);
+  $limit = Flight::query("limit",10);
+  $order = Flight::query("order","-id");
+  Flight::json(Flight::medicineService()->get_user_medicines($id,$offset, $limit,$order, $search));
 });
 
 
