@@ -37,8 +37,6 @@
           throw new Exception("There is already a user with email: ".$data["email"].". Please try another email address.", 400, $e);
         }
         throw $e;
-
-
       }
 
 
@@ -58,9 +56,9 @@
     public function confirm($token){
       $user = $this->dao->get_user_by_token($token);
       if($user){
-        $this->update(["status"=>"ACTIVE","token"=>NULL],$user["id"]);
+        $this->update(["status"=>"ACTIVE","token"=> md5(random_bytes(16))],$user["id"]);
         $this->smtp->send_activation_successful_email($user);
-        return $this->get_by_id($user["id"]);
+        return $this->dao->get_by_id($user["id"]);
 
       }
     }
@@ -77,9 +75,7 @@
         throw new Exception("Invalid password!",400);
       }
 
-      $jwt = Flight::jwt($user);
-
-      return ["token"=>$jwt];
+      return $user;
 
     }
 
@@ -106,6 +102,7 @@
         throw new Exception("Token expired!");
       }
       $this->dao->update(["password"=>md5($data["password"])],$user["id"]);
+      return $this->dao->get_by_id($user["id"]);
     }
 
 

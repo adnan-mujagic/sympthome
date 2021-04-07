@@ -90,7 +90,8 @@ Flight::route("POST /register",function(){
 */
 Flight::route("POST /login", function(){
   $data=Flight::request()->data->getData();
-  Flight::json([Flight::userService()->login($data)]);
+  $user = Flight::userService()->login($data);
+  Flight::json(["token"=>Flight::jwt($user)]);
 });
 
 
@@ -130,8 +131,8 @@ Flight::route("POST /forgot", function(){
 */
 Flight::route("PUT /reset", function(){
   $data = Flight::request()->data->getData();
-  Flight::userService()->reset($data);
-  Flight::json(["message"=>"Password successfully updated."]);
+  $user = Flight::userService()->reset($data);
+  Flight::json(["token"=>Flight::jwt($user)]);
 });
 
 /**
@@ -141,7 +142,8 @@ Flight::route("PUT /reset", function(){
 *
 */
 Flight::route("/confirm/@token",function($token){
-  Flight::json(Flight::userService()->confirm($token));
+  $user=Flight::userService()->confirm($token);
+  Flight::json(["token"=>Flight::jwt($user)]);
 });
 
 
