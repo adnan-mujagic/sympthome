@@ -247,10 +247,21 @@ Flight::route("GET /admin/users/@id/medicines", function($id){
   Flight::json(Flight::medicineService()->get_user_medicines($id,$offset, $limit,$order, $search));
 });
 
-
-
-
-
+/**
+* @OA\Post(path="/users/symptoms",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\RequestBody(required=true,
+*   @OA\MediaType(mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(property="symptom_id",example="1"),
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Update a logged in user in the database!")
+*)
+*/
+Flight::route("POST /users/symptoms",function(){
+  Flight::json(Flight::userService()->add_symptom(Flight::request()->data->getData()));
+})
 
 
  ?>

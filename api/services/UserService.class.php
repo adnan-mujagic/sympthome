@@ -3,14 +3,17 @@
   require_once dirname(__FILE__)."/BaseService.class.php";
   require_once dirname(__FILE__)."/../config.php";
   require_once dirname(__FILE__)."/../clients/SMTPClient.class.php";
+  require_once dirname(__FILE__)."/../dao/UserSymptomLogDao.class.php";
 
 
 
   class UserService extends BaseService{
     protected $smtp;
+    protected $usl;
     public function __construct(){
       parent::__construct(new UsersDao());
       $this->smtp = new SMTPClient();
+      $this->usl = new UserSymptomLogDao();
     }
 
     public function register($data){
@@ -105,11 +108,10 @@
       return $this->dao->get_by_id($user["id"]);
     }
 
-
-
-
-
-
+    public function add_symptom($data){
+      $data["user_id"]=Flight::get("user")["id"];
+      return $this->usl->add($data);
+    }
 
   }
 
