@@ -71,6 +71,26 @@ Flight::route("PUT /admin/symptoms/@id",function($id){
   Flight::json(Flight::symptomService()->update($data,$id));
 });
 
+
+/**
+* @OA\Post(path="/admin/symptoms/{id}/diseases", tags={"Symptoms","Admin"},security={{"ApiKeyAuth": {}}},
+*   @OA\Parameter(type="integer",in="path", name="id", example="5", description="Id of the symptom we want to relate to some disease!"),
+*   @OA\RequestBody(required=true,
+*     @OA\MediaType(mediaType="application/json",
+*       @OA\Schema(
+*         @OA\Property(type="string", property="disease_id", example="21"),
+*     )
+*   )
+* ),
+* @OA\Response(response="200", description="Add diseases related to a symptom with the specific id!")
+*)
+*/
+Flight::route("POST /admin/symptoms/@id/diseases",function($id){
+  $data = Flight::request()->data->getData();
+  $data["symptom_id"]=$id;
+  Flight::json(Flight::symptomService()->add_disease_for_symptom($data));
+});
+
 /**
 *@OA\Get(path="/users/symptoms",tags={"Symptoms","Users"},security={{"ApiKeyAuth": {}}},
 *   @OA\Parameter(type="integer",in="query",name="offset",example="0",description="Offset for pages!"),
