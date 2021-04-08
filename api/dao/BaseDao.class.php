@@ -110,6 +110,12 @@ class BaseDao{
       else if(str_contains($e->getMessage(),"doesn't have a default value")){
         throw new Exception("You are missing one or more of the required fields",400,$e);
       }
+      else if(str_contains($e->getMessage(),"user_symptom_log.uq_user_id_symptom_id")){
+        throw new Exception("You cannot add the same symptom multiple times!",400,$e);
+      }
+      else if(str_contains($e->getMessage(),"FOREIGN KEY (`symptom_id`) REFERENCES `symptoms` (`id`))")){
+        throw new Exception("That symptom does not exist!",400,$e);
+      }
       else{
         throw $e;
       }
