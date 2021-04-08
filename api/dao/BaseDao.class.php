@@ -116,6 +116,12 @@ class BaseDao{
       else if(str_contains($e->getMessage(),"FOREIGN KEY (`symptom_id`) REFERENCES `symptoms` (`id`))")){
         throw new Exception("That symptom does not exist!",400,$e);
       }
+      else if(str_contains($e->getMessage(),"disease_medicine_log.uq_disease_id_medicine_id")){
+        throw new Exception("This medicine is already related to that disease! We do not need duplicate entries!",400,$e);
+      }
+      else if(str_contains($e->getMessage(),"FOREIGN KEY (`disease_id`) REFERENCES `diseases` (`id`))")){
+        throw new Exception("That disease does not exist!",400,$e);
+      }
       else{
         throw $e;
       }

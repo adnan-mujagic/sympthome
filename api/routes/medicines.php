@@ -57,8 +57,28 @@ Flight::route("POST /admin/medicines",function(){
   Flight::json(Flight::medicineService()->add_medicine($data));
 });
 
+
 /**
-* @OA\Put(path="/admin/medicines/{id}", tags={"Medicines"},security={{"ApiKeyAuth": {}}},
+* @OA\Post(path="/admin/medicines/{id}/diseases", tags={"Medicines","Admin"},security={{"ApiKeyAuth": {}}},
+*   @OA\Parameter(type="integer",in="path", name="id", example="5", description="Id of the medicine we want to relate to some disease!"),
+*   @OA\RequestBody(required=true,
+*     @OA\MediaType(mediaType="application/json",
+*       @OA\Schema(
+*         @OA\Property(type="string", property="disease_id", example="1"),
+*     )
+*   )
+* ),
+* @OA\Response(response="200", description="Add disease related to a medicine with the specific id!")
+*)
+*/
+Flight::route("POST /admin/medicines/@id/diseases",function($id){
+  $data = Flight::request()->data->getData();
+  $data["medicine_id"]=$id;
+  Flight::json(Flight::medicineService()->add_disease_for_medicine($data));
+});
+
+/**
+* @OA\Put(path="/admin/medicines/{id}", tags={"Medicines","Admin"},security={{"ApiKeyAuth": {}}},
 *   @OA\Parameter(type="integer",in="path", name="id", example="5", description="Id of the medicine we want to apply changes to!"),
 *   @OA\RequestBody(required=true,
 *     @OA\MediaType(mediaType="application/json",
