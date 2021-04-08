@@ -92,6 +92,25 @@ Flight::route("GET /users/diseases", function(){
   Flight::json(Flight::diseaseService()->get_user_diseases(Flight::get("user")["id"],$offset, $limit,$order, $search));
 });
 
+/**
+* @OA\Post(path="/admin/diseases/{id}/symptoms", tags={"Diseases","Admin"},security={{"ApiKeyAuth": {}}},
+*   @OA\Parameter(type="integer",in="path", name="id", example="5", description="Id of the disease we want to relate to some symptom!"),
+*   @OA\RequestBody(required=true,
+*     @OA\MediaType(mediaType="application/json",
+*       @OA\Schema(
+*         @OA\Property(type="string", property="symptom_id", example="21"),
+*     )
+*   )
+* ),
+* @OA\Response(response="200", description="Add symptoms related to the disease with the specific id!")
+*)
+*/
+Flight::route("POST /admin/diseases/@id/symptoms", function($id){
+  $data = Flight::request()->data->getData();
+  $data["disease_id"]=$id;
+  Flight::json(Flight::diseaseService()->add_symptom_for_disease($data));
+});
+
 
 
 
