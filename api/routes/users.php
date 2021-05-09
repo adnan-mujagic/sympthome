@@ -111,7 +111,7 @@ Flight::route("POST /login", function(){
 Flight::route("POST /forgot", function(){
   $data=Flight::request()->data->getData();
   Flight::userService()->forgot($data);
-  Flight::json(["message"=>"Reset link sent!"]);
+  Flight::json(["message"=>"Link for your password recovery has been sent to your email address!"]);
 });
 
 

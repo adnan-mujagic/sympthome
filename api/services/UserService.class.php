@@ -93,7 +93,7 @@
       }
 
       $this->dao->update(["token"=>md5(random_bytes(16)), "token_created_at"=>date(Config::DATE_FORMAT)],$user["id"]);
-      $this->smtp->send_passowrd_recovery_token_email($this->dao->get_user_by_email($data["email"]));
+      $this->smtp->send_password_recovery_token_email($this->dao->get_user_by_email($data["email"]));
     }
 
     public function reset($data){

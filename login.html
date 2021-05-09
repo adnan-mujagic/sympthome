@@ -123,12 +123,12 @@
                             <h3 class="panel-title">Password Recovery Form</h3>
                         </div>
                         <div id="success-alert-forgot" class="alert alert-success hidden" role="alert" style="margin:10px;">
-                          Confirmation email sent!
+                          Reset token has been sent to your account!
                         </div>
                         <div id="warning-alert-forgot" class="alert alert-warning hidden" role="alert" style="margin:10px;">
                           This is a warning alert—check it out!
                         </div>
-                        <div id="form-body" class="panel-body">
+                        <div id="forgot-form-body" class="panel-body">
                             <form role="form">
                                 <fieldset>
                                     <div class="form-group">
@@ -161,9 +161,10 @@
                         <div id="warning-alert-change" class="alert alert-warning hidden" role="alert" style="margin:10px;">
                           This is a warning alert—check it out!
                         </div>
-                        <div id="form-body" class="panel-body">
+                        <div id="change-form-body" class="panel-body">
                             <form role="form">
                                 <fieldset>
+                                    <input id="change-password-token" name="token" type="hidden" autofocus>
                                     <div class="form-group">
                                         <input id="change-password" class="form-control" placeholder="Password" name="password" type="password" autofocus>
                                     </div>
@@ -193,6 +194,11 @@
               window.location = "index.html";
             }else{
               $("body").show();
+            }
+            var urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has("token")){
+              $("#change-password-token").val(urlParams.get("token"));
+              showResetPasswordForm();
             }
           });
 
@@ -229,6 +235,13 @@
             $("#forgot-form").removeClass("hidden");
           };
 
+          function showResetPasswordForm(){
+            $("#register-form").addClass("hidden");
+            $("#forgot-form").addClass("hidden");
+            $("#login-form").addClass("hidden");
+            $("#change-password-form").removeClass("hidden");
+          }
+
           function doRegister(){
             var register_info = {
               "first_name" : $("#register-first-name").val(),
@@ -249,6 +262,23 @@
               console.log(error);
             });
 
+          }
+
+          function sendRecoveryLink(){
+            var email ={
+              "email":$("#forgot-email").val()
+            };
+
+            $.post("http://localhost:8080/api/forgot", email).done(function(data){
+              console.log(data);
+              $("#success-alert-forgot").html(data.message);
+              $("#success-alert-forgot").removeClass("hidden");
+              $("#forgot-form-body").addClass("hidden");
+
+
+            }).fail(function(error){
+              alert(error.responseJSON.message);
+            })
           }
         </script>
 

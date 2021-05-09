@@ -33,12 +33,12 @@ class SMTPClient{
   }
 
 
-  public function send_passowrd_recovery_token_email($user){
+  public function send_password_recovery_token_email($user){
     // Create a message
     $message = (new Swift_Message('Reset Your Password'))
       ->setFrom(['adnanmujagic@outlook.com' => 'Sympthome'])
       ->setTo([$user["email"]=>$user["first_name"]])
-      ->setBody('Hello, '.$user["first_name"].", please visit this token to reset the password: ".$user["token"]." .Your token will expire in five minutes, so make sure you do it quickly!");
+      ->setBody('Hello, '.$user["first_name"].", please visit this link to reset your password: http://localhost:8080/login.html?token=".$user["token"]." .Your token will expire in five minutes, so make sure you do it quickly!");
 
     $result = $this->mailer->send($message);
     return $result;
