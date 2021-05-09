@@ -52,7 +52,13 @@
                                     <!-- Change this to a button or input when using this as a form -->
                                     <button id="login-button" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Log In</button>
                                     </div>
-                                    <a href="#" onclick="showRegister();">Want to register?</a>
+                                    <div class="container">
+                                      <div class="row">
+                                        <a href="#" onclick="showRegister();">Want to register?</a>
+                                        <a href="#" onclick="showForgotPasswordForm();">Forgot password?</a>
+                                      </div>
+                                    </div>
+
 
                                 </fieldset>
                             </form>
@@ -109,6 +115,71 @@
             </div>
         </div>
 
+        <div id="forgot-form" class="container hidden">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Password Recovery Form</h3>
+                        </div>
+                        <div id="success-alert-forgot" class="alert alert-success hidden" role="alert" style="margin:10px;">
+                          Confirmation email sent!
+                        </div>
+                        <div id="warning-alert-forgot" class="alert alert-warning hidden" role="alert" style="margin:10px;">
+                          This is a warning alert—check it out!
+                        </div>
+                        <div id="form-body" class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="forgot-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                    <!-- Change this to a button or input when using this as a form -->
+                                      <button id="send-recovery-link-button" onclick="sendRecoveryLink();" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
+                                    </div>
+                                    <a href="#" onclick="showLogin();">Back to login?</a>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="change-password-form" class="container hidden">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Change Password</h3>
+                        </div>
+                        <div id="success-alert-change" class="alert alert-success hidden" role="alert" style="margin:10px;">
+                          Confirmation email sent!
+                        </div>
+                        <div id="warning-alert-change" class="alert alert-warning hidden" role="alert" style="margin:10px;">
+                          This is a warning alert—check it out!
+                        </div>
+                        <div id="form-body" class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="change-password" class="form-control" placeholder="Password" name="password" type="password" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                    <!-- Change this to a button or input when using this as a form -->
+                                      <button id="change-password-button" onclick="changePassword();" class="btn btn-lg btn-success btn-block">Change Password</button>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- jQuery -->
         <script src="./assets/js/jquery.min.js"></script>
 
@@ -148,8 +219,15 @@
 
           function showLogin(){
             $("#register-form").addClass("hidden");
+            $("#change-password-form").addClass("hidden");
+            $("#forgot-form").addClass("hidden");
             $("#login-form").removeClass("hidden");
           }
+
+          function showForgotPasswordForm(){
+            $("#login-form").addClass("hidden");
+            $("#forgot-form").removeClass("hidden");
+          };
 
           function doRegister(){
             var register_info = {
