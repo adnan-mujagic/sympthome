@@ -32,7 +32,7 @@
     </head>
     <body style="display:none">
 
-        <div id="login-form" class="container">
+        <div id="login-form-container" class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
@@ -40,13 +40,13 @@
                             <h3 class="panel-title">Please Sign In</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="login-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
@@ -70,7 +70,7 @@
 
 
 
-        <div id="register-form" class="container hidden">
+        <div id="register-form-container" class="container hidden">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
@@ -84,22 +84,22 @@
                           This is a warning alert—check it out!
                         </div>
                         <div id="form-body" class="panel-body">
-                            <form role="form">
+                            <form id="register-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="register-first-name" class="form-control" placeholder="First Name" name="firstname"  value="">
+                                        <input class="form-control" placeholder="First Name" name="first_name"  value="">
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-last-name" class="form-control" placeholder="Last Name" name="lastname" value="">
+                                        <input class="form-control" placeholder="Last Name" name="last_name" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-age" class="form-control" placeholder="Age" name="age" type="age" value="">
+                                        <input class="form-control" placeholder="Age" name="age" type="age" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
 
                                     <div class="form-group">
@@ -115,7 +115,7 @@
             </div>
         </div>
 
-        <div id="forgot-form" class="container hidden">
+        <div id="forgot-form-container" class="container hidden">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
@@ -129,7 +129,7 @@
                           This is a warning alert—check it out!
                         </div>
                         <div id="forgot-form-body" class="panel-body">
-                            <form role="form">
+                            <form id="forgot-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
                                         <input id="forgot-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
@@ -148,7 +148,7 @@
         </div>
 
 
-        <div id="change-password-form" class="container hidden">
+        <div id="change-password-form-container" class="container hidden">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
@@ -162,7 +162,7 @@
                           This is a warning alert—check it out!
                         </div>
                         <div id="change-form-body" class="panel-body">
-                            <form role="form">
+                            <form id="change-form" role="form">
                                 <fieldset>
                                     <input id="change-password-token" name="token" type="hidden" autofocus>
                                     <div class="form-group">
@@ -187,6 +187,8 @@
         <!-- Bootstrap Core JavaScript -->
         <script src="./assets/js/bootstrap.min.js"></script>
 
+        <script src="./assets/js/utils.js"></script>
+
         <script type="text/javascript">
 
           $(function(){
@@ -202,56 +204,61 @@
             }
           });
 
+
+
+          function showRegister(){
+            $("#login-form-container").addClass("hidden");
+            $("#register-form-container").removeClass("hidden");
+          }
+
+          function showLogin(){
+            $("#register-form-container").addClass("hidden");
+            $("#change-password-form-container").addClass("hidden");
+            $("#forgot-form-container").addClass("hidden");
+            $("#login-form-container").removeClass("hidden");
+          }
+
+          function showForgotPasswordForm(){
+            $("#login-form-container").addClass("hidden");
+            $("#forgot-form-container").removeClass("hidden");
+          };
+
+          function showResetPasswordForm(){
+            $("#register-form-container").addClass("hidden");
+            $("#forgot-form-container").addClass("hidden");
+            $("#login-form-container").addClass("hidden");
+            $("#change-password-form-container").removeClass("hidden");
+          }
+
           function doLogin(){
-            var login_info = {
-              "email" : $("#email").val(),
-              "password" : $("#password").val()
-            };
+
             $("#login-button").prop("disabled", true);
-            $.post( "http://localhost:8080/api/login", login_info ).done(function( data ) {
+            $.post( "http://localhost:8080/api/login", jsonize("#login-form") ).done(function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
               alert(error.responseJSON.message);
               $("#login-button").prop("disabled", false);
             });
-            console.log(login_info);
+
           }
 
-          function showRegister(){
-            $("#login-form").addClass("hidden");
-            $("#register-form").removeClass("hidden");
-          }
+          function changePassword(){
+            $("#change-password-button").prop("disabled", true);
 
-          function showLogin(){
-            $("#register-form").addClass("hidden");
-            $("#change-password-form").addClass("hidden");
-            $("#forgot-form").addClass("hidden");
-            $("#login-form").removeClass("hidden");
-          }
-
-          function showForgotPasswordForm(){
-            $("#login-form").addClass("hidden");
-            $("#forgot-form").removeClass("hidden");
-          };
-
-          function showResetPasswordForm(){
-            $("#register-form").addClass("hidden");
-            $("#forgot-form").addClass("hidden");
-            $("#login-form").addClass("hidden");
-            $("#change-password-form").removeClass("hidden");
+            $.post( "http://localhost:8080/api/reset", jsonize("#change-form") ).done(function( data ) {
+                window.localStorage.setItem("token", data.token);
+                window.location = "index.html";
+            }).fail(function(error) {
+              alert(error.responseJSON.message);
+              $("#change-password-button").prop("disabled", false);
+            });
           }
 
           function doRegister(){
-            var register_info = {
-              "first_name" : $("#register-first-name").val(),
-              "last_name" : $("#register-last-name").val(),
-              "age" : $("#register-age").val(),
-              "email" : $("#register-email").val(),
-              "password" : $("#register-password").val()
-            };
+
             $("register-button").prop("disabled",true);
-            $.post("http://localhost:8080/api/register", register_info).done(function(data){
+            $.post("http://localhost:8080/api/register", jsonize("#register-form")).done(function(data){
               console.log(data);
               $("#success-alert").html(data.message);
               $("#success-alert").removeClass("hidden");

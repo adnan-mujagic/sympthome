@@ -116,7 +116,7 @@ Flight::route("POST /forgot", function(){
 
 
 /**
-*@OA\Put(path="/reset",tags={"Users"},
+*@OA\Post(path="/reset",tags={"Users"},
 * @OA\RequestBody(required = true,
 *   @OA\MediaType(
 *     mediaType="application/json",
@@ -129,7 +129,7 @@ Flight::route("POST /forgot", function(){
 * @OA\Response(response="200",description="Forgot Password?"))
 *
 */
-Flight::route("PUT /reset", function(){
+Flight::route("POST /reset", function(){
   $data = Flight::request()->data->getData();
   $user = Flight::userService()->reset($data);
   Flight::json(["token"=>Flight::jwt($user)]);
