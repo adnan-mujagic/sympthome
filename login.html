@@ -18,7 +18,7 @@
         <!-- Custom CSS -->
         <link href="./assets/css/startmin.css" rel="stylesheet">
 
-
+        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css">
 
         <!-- Custom Fonts -->
         <link href="./assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -189,6 +189,8 @@
 
         <script src="./assets/js/utils.js"></script>
 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
         <script type="text/javascript">
 
           $(function(){
@@ -233,11 +235,11 @@
           function doLogin(){
 
             $("#login-button").prop("disabled", true);
-            $.post( "http://localhost:8080/api/login", jsonize("#login-form") ).done(function( data ) {
+            $.post( "api/login", jsonize("#login-form") ).done(function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
-              alert(error.responseJSON.message);
+              toastr.error(error.responseJSON.message);
               $("#login-button").prop("disabled", false);
             });
 
@@ -246,11 +248,11 @@
           function changePassword(){
             $("#change-password-button").prop("disabled", true);
 
-            $.post( "http://localhost:8080/api/reset", jsonize("#change-form") ).done(function( data ) {
+            $.post( "api/reset", jsonize("#change-form") ).done(function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
-              alert(error.responseJSON.message);
+              toastr.error(error.responseJSON.message);
               $("#change-password-button").prop("disabled", false);
             });
           }
@@ -258,15 +260,13 @@
           function doRegister(){
 
             $("register-button").prop("disabled",true);
-            $.post("http://localhost:8080/api/register", jsonize("#register-form")).done(function(data){
+            $.post("api/register", jsonize("#register-form")).done(function(data){
               console.log(data);
               $("#success-alert").html(data.message);
               $("#success-alert").removeClass("hidden");
               $("#form-body").addClass("hidden");
             }).fail(function(error){
-              $("warning-alert").html(error.responseJSON.message).removeClass("hidden");
-
-              console.log(error);
+              toastr.error(error.responseJSON.message);
             });
 
           }
@@ -276,7 +276,7 @@
               "email":$("#forgot-email").val()
             };
 
-            $.post("http://localhost:8080/api/forgot", email).done(function(data){
+            $.post("api/forgot", email).done(function(data){
               console.log(data);
               $("#success-alert-forgot").html(data.message);
               $("#success-alert-forgot").removeClass("hidden");
@@ -284,7 +284,7 @@
 
 
             }).fail(function(error){
-              alert(error.responseJSON.message);
+              toastr.error(error.responseJSON.message);
             })
           }
         </script>
