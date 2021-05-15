@@ -123,7 +123,50 @@
     }
 
     function getDiseases(){
-      $.ajax({
+
+      $("#disease-container").DataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+    //  pagingType: "simple",
+      ajax: {
+        url: "api/diseases",
+        type: "GET",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
+        },
+        dataSrc: function(resp){
+          console.log(resp);
+          return resp;
+        },
+        data: function ( d ) {
+          d.offset=d.start;
+          d.limit=d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
+          console.log(d);
+        }
+      },
+      columns: [
+            { "data": "id",
+              "render": function ( data, type, row, meta ) {
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditEmailTemplateModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
+            { "data": "name" },
+            { "data": "description" },
+            { "data": "treatment_description" },
+            { "data": "category_id" },
+            { "data": "date_added" }
+        ],
+
+    });
+      /*$.ajax({
          url: "api/diseases?order="+encodeURIComponent("+id"),
          type: "GET",
          success: function(data) {
@@ -139,8 +182,9 @@
                  +'<td class="center">'+data[i].date_added+'</td></tr>';
            }
            $("#disease-container tbody").html(html);
+           $("#disease-container").DataTable();
            console.log(data);
          }
-      });
+      });*/
     }
   </script>
