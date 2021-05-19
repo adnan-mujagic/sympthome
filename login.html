@@ -41,7 +41,14 @@
                         </div>
                         <div class="panel-body">
                             <form id="login-form" role="form">
+                                <div id="success-alert-login" class="alert alert-success hidden" role="alert" style="margin:10px;">
+                                  Confirmation email sent!
+                                </div>
+                                <div id="warning-alert-login" class="alert alert-warning hidden" role="alert">
+                                  This is a warning alert—check it out!
+                                </div>
                                 <fieldset>
+
                                     <div class="form-group">
                                         <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
@@ -93,7 +100,7 @@
                                         <input class="form-control" placeholder="Last Name" name="last_name" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Age" name="age" type="age" value="">
+                                        <input class="form-control" placeholder="Age" name="age" type="number" value="">
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
@@ -104,7 +111,7 @@
 
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="register-button" onclick="doRegister();" class="btn btn-lg btn-success btn-block">Register</button>
+                                      <button id="register-button" onclick="doRegister();" type="button" class="btn btn-lg btn-success btn-block">Register</button>
                                     </div>
                                     <a href="#" onclick="showLogin();">Already have an account?</a>
                                 </fieldset>
@@ -136,7 +143,7 @@
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="send-recovery-link-button" onclick="sendRecoveryLink();" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
+                                      <button id="send-recovery-link-button" onclick="sendRecoveryLink();" type="button" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
                                     </div>
                                     <a href="#" onclick="showLogin();">Back to login?</a>
                                 </fieldset>
@@ -170,7 +177,7 @@
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="change-password-button" onclick="changePassword();" class="btn btn-lg btn-success btn-block">Change Password</button>
+                                      <button id="change-password-button" onclick="changePassword();" type="button" class="btn btn-lg btn-success btn-block">Change Password</button>
                                     </div>
 
                                 </fieldset>
@@ -235,11 +242,13 @@
           function doLogin(){
 
             $("#login-button").prop("disabled", true);
-            $.post( "api/login", jsonize("#login-form") ).done(function( data ) {
+            $.post( "api/login", jsonize("#login-form"),function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
-              toastr.error(error.responseJSON.message);
+              $("#warning-alert-login").html(error.responseJSON.message);
+              $("#warning-alert-login").removeClass("hidden");
+              //toastr.error(error.responseJSON.message);
               $("#login-button").prop("disabled", false);
             });
 
@@ -259,14 +268,19 @@
 
           function doRegister(){
 
-            $("register-button").prop("disabled",true);
-            $.post("api/register", jsonize("#register-form")).done(function(data){
+            $("#register-button").prop("disabled",true);
+            $.post("api/register", jsonize("#register-form"),function(data){
               console.log(data);
+              $("#warning-alert").addClass("hidden");
               $("#success-alert").html(data.message);
               $("#success-alert").removeClass("hidden");
               $("#form-body").addClass("hidden");
             }).fail(function(error){
-              toastr.error(error.responseJSON.message);
+              $("#warning-alert").html(error.responseJSON.message);
+              $("#warning-alert").removeClass("hidden");
+
+              //toastr.error(error.responseJSON.message);
+              $("#register-button").prop("disabled",false);
             });
 
           }
@@ -276,15 +290,19 @@
               "email":$("#forgot-email").val()
             };
 
-            $.post("api/forgot", email).done(function(data){
+            $.post("api/forgot", email,function(data){
               console.log(data);
+              $("#warning-alert-forgot").addClass("hidden");
               $("#success-alert-forgot").html(data.message);
               $("#success-alert-forgot").removeClass("hidden");
               $("#forgot-form-body").addClass("hidden");
 
 
             }).fail(function(error){
-              toastr.error(error.responseJSON.message);
+              $("#warning-alert-forgot").html(error.responseJSON.message);
+              $("#warning-alert-forgot").removeClass("hidden");
+
+              //toastr.error(error.responseJSON.message);
             })
           }
         </script>
