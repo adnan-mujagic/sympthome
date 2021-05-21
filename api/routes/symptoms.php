@@ -1,6 +1,6 @@
 <?php
 /**
- * @OA\Get(path="/admin/symptoms", tags={"Symptoms","Admin"},security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/symptoms", tags={"Symptoms"},
  *   @OA\Parameter(type="integer",in="query",name="offset",example="0",description="Offset for pages!"),
  *   @OA\Parameter(type="integer", in="query", name="limit",example="20",description="Limit for pages!"),
  *   @OA\Parameter(type="string", in="query", name="search",description="Case insensitive search function!"),
@@ -9,7 +9,7 @@
  *
  * )
  */
-Flight::route("GET /admin/symptoms", function(){
+Flight::route("GET /symptoms", function(){
   $search = Flight::query("search");
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",10);
