@@ -31,7 +31,7 @@ class DiseasesDao extends BaseDao{
               JOIN symptoms s ON s.id = sdbl.symptom_id
               JOIN user_symptom_log usl ON s.id = usl.symptom_id
               JOIN users u ON u.id = usl.user_id
-              WHERE u.id = ".$user_id;
+              WHERE u.id = ".$user_id." AND usl.status = 'ACTIVE'";
     if(isset($search)){
       $query= $query." AND LOWER(d.name) LIKE LOWER(CONCAT('%',:search,'%'))";
       $params["search"]=$search;
