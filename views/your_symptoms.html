@@ -105,7 +105,7 @@
       columns: [
             { "data": "id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick="addSymptom('data')"><i class="fas fa-plus-circle"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick=""><i class="fas fa-plus-circle"></i></a>';
               }
             },
             { "data": "name"}
@@ -146,7 +146,7 @@
       columns: [
             { "data": "id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick="openEditDiseaseModal('+data+')"><i class="far fa-trash-alt"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick=""><i class="far fa-trash-alt"></i></a>';
               }
             },
             { "data": "name"}
@@ -195,4 +195,6 @@
     });
 
     }
+
+
   </script>
