@@ -156,7 +156,7 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-    //  pagingType: "simple",
+      pagingType: "simple",
       ajax: {
         url: "api/diseases",
         type: "GET",
@@ -194,26 +194,7 @@
         ],
 
     });
-      /*$.ajax({
-         url: "api/diseases?order="+encodeURIComponent("+id"),
-         type: "GET",
-         success: function(data) {
 
-           var html = "";
-           for(var i = 0; i < data.length; i++){
-             html += '<tr class="odd">'
-                 +'<td>'+(i+1)+'</td>'
-                 +'<td>'+data[i].name+'</td>'
-                 +'<td>'+data[i].description+'</td>'
-                 +'<td>'+data[i].treatment_description+'</td>'
-                 +'<td>'+data[i].category_id+'</td>'
-                 +'<td class="center">'+data[i].date_added+'</td></tr>';
-           }
-           $("#disease-container tbody").html(html);
-           $("#disease-container").DataTable();
-           console.log(data);
-         }
-      });*/
     }
 
     function openEditDiseaseModal(id){
