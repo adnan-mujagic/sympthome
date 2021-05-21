@@ -45,7 +45,7 @@
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h4 class="modal-title" id="myModalLabel">Add Disease Form</h4>
                       </div>
-
+                      <input type="hidden" name="id" />
                       <div class="modal-body">
                         <div class="form-group">
                             <label>Name</label>
@@ -95,8 +95,15 @@
     $("#add-disease-form").validate({
       submitHandler: function(form, event) {
         event.preventDefault();
+        var data = jsonize($(form));
 
-        addDisease(jsonize($(form)));
+        if(!data.id){
+          addDisease(data);
+        }
+        else{
+          updateDisease(data);
+        }
+
       }
      });
     getDiseases();
@@ -120,6 +127,25 @@
            console.log(jqXHR);
          }
       });
+    }
+
+    function updateDisease(form){
+      $.ajax({
+        url:"api/admin/diseases/"+form.id,
+        type:"PUT",
+        data: JSON.stringify(form),
+        contentType: "application/json",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          toastr.success("Disease has been updated!");
+          getDiseases();
+          $("#add-disease-form").trigger("reset");
+          $('#add-disease-form-modal').modal("hide");
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+        }
+      })
     }
 
     function getDiseases(){
@@ -155,7 +181,7 @@
       columns: [
             { "data": "id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditEmailTemplateModal('+data+')"><i class="fa fa-edit"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditDiseaseModal('+data+')"><i class="fa fa-edit"></i></a>';
               }
             },
             { "data": "name" },
@@ -186,5 +212,22 @@
            console.log(data);
          }
       });*/
+    }
+
+    function openEditDiseaseModal(id){
+      $.ajax({
+        url: "api/diseases/"+id,
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          $("#add-disease-form *[name='id']").val(data.id);
+          $("#add-disease-form *[name='name']").val(data.name);
+          $("#add-disease-form *[name='description']").val(data.description);
+          $("#add-disease-form *[name='treatment_description']").val(data.treatment_description);
+          $("#add-disease-form *[name='category_id']").val(data.category_id);
+          $("#add-disease-form-modal").modal("show");
+          console.log(data);
+        }
+      });
     }
   </script>
