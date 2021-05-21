@@ -140,7 +140,9 @@
           toastr.success("Disease has been updated!");
           getDiseases();
           $("#add-disease-form").trigger("reset");
+          $("#add-disease-form *[name='id']").val("");
           $('#add-disease-form-modal').modal("hide");
+
         },
         error: function(jqXHR, textStatus, errorThrown ){
           toastr.error(jqXHR.responseJSON.message);
