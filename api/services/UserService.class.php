@@ -113,6 +113,11 @@
       return $this->usl->add($data);
     }
 
+
+    public function delete_symptom($data, $user_id){
+      $object_to_update = $this->usl->get_user_symptoms($data["symptom_id"], $user_id);
+      return $this->usl->update(["status"=>"DELETED"],$object_to_update["id"]);
+    }
   }
 
 

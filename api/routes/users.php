@@ -261,7 +261,25 @@ Flight::route("GET /admin/users/@id/medicines", function($id){
 */
 Flight::route("POST /users/symptoms",function(){
   Flight::json(Flight::userService()->add_symptom(Flight::request()->data->getData()));
-})
+});
+
+/**
+*@OA\Put(path="/users/symptoms",tags={"Users"},security={{"ApiKeyAuth": {}}},
+* @OA\RequestBody(required=true,
+*   @OA\MediaType(mediaType="application/json",
+*     @OA\Schema(
+*       @OA\Property(property="symptom_id",example="1")
+*   )
+* )
+*),
+* @OA\Response(response="200",description="Delete a logged in user's symptom in the database!"))
+*
+*/
+Flight::route("PUT /users/symptoms",function(){
+  $data=Flight::request()->data->getData();
+  Flight::json(Flight::userService()->delete_symptom($data,Flight::get("user")["id"]));
+
+});
 
 
  ?>
