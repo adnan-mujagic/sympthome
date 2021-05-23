@@ -129,8 +129,28 @@
           toastr.success("Symptom has been added!");
           getUserSymptoms();
           getUserDiseases();
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+        }
+      })
+    }
 
+    function deleteSymptom(id){
+      let info = {
+        "symptom_id":id
+      }
 
+      $.ajax({
+        url:"api/users/symptoms",
+        type:"PUT",
+        data: JSON.stringify(info),
+        contentType: "application/json",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          toastr.success("Symptom has been deleted!");
+          getUserSymptoms();
+          getUserDiseases();
         },
         error: function(jqXHR, textStatus, errorThrown ){
           toastr.error(jqXHR.responseJSON.message);
@@ -169,7 +189,7 @@
       columns: [
             { "data": "id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick=""><i class="far fa-trash-alt"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 20px; cursor: pointer;" onclick="deleteSymptom('+data+')"><i class="far fa-trash-alt"></i></a>';
               }
             },
             { "data": "name"}
