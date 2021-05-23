@@ -109,8 +109,17 @@
     }
 
     public function add_symptom($data){
-      $data["user_id"]=Flight::get("user")["id"];
-      return $this->usl->add($data);
+      $existing_object = $this->usl->get_user_symptoms($data["symptom_id"], Flight::get("user")["id"]);
+      if(!$existing_object){
+        $data["user_id"]=Flight::get("user")["id"];
+        return $this->usl->add($data);
+      }else if($existing_object && $existing_object["status"]!="ACTIVE"){
+        return $this->usl->update(["status"=>"ACTIVE"], $existing_object["id"]);
+      }
+      else{
+        throw new Exception("You have already added this symptom!");
+      }
+
     }
 
 
