@@ -40,6 +40,18 @@ class DiseasesDao extends BaseDao{
                     " LIMIT ".$limit." OFFSET ".$offset;
     return $this->query($query,$params);
   }
+
+  public function get_disease_popularity(){
+    $query = "SELECT d.name, COUNT(u.id) FROM diseases d
+              JOIN symptom_disease_bodypart_log sdbl ON d.id = sdbl.disease_id
+              JOIN symptoms s ON sdbl.symptom_id=s.id
+              JOIN user_symptom_log usl ON usl.symptom_id=s.id
+              JOIN users u ON u.id = usl.user_id
+              WHERE usl.status='ACTIVE'
+              group by d.name";
+    return $this->query($query,array());
+
+  }
 }
 
  ?>

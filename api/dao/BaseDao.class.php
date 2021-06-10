@@ -144,23 +144,43 @@ class BaseDao{
     return $this->query_single("SELECT * FROM ".$this->table." WHERE id=:id",["id"=>$id]);
   }
 
-  public function get_all($offset = 0, $limit = 25, $order="-id"){
+  public function get_all($offset = 0, $limit = 25, $order="-id", $total = FALSE){
 
     list($column, $direction) = self::parse_order($order);
+    $sql = "SELECT ";
+    if($total){
+      $sql.="COUNT(*) AS total  FROM ".$this->table;
+    }
+    else{
+      $sql .= "* FROM ".$this->table." ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
+    }
 
-    $sql = "SELECT * FROM ".$this->table." ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
     print_r($sql);
 
+    if($total){
+      return $this->query_single($sql,[]);
+    }
+    //otherwise return the normal query!
     return $this->query($sql,[]);
 
   }
 
   //A GLOBAL FUNCTION TO SEARCH FOR ANY ENTITY AS LONG AS YOU ONLY HAVE TO SEARCH IN ONE COLUMN
-  public function get_entity_by_search($search,$offset,$limit,$order,$search_column="name"){
+  public function get_entity_by_search($search,$offset,$limit,$order,$search_column="name",$total=FALSE){
     list($column,$direction) = self::parse_order($order);
+    $query = "SELECT ";
+    if($total==TRUE){
+      $query.="COUNT(*) AS total FROM ".$this->table." WHERE LOWER(".$search_column.") LIKE LOWER(CONCAT('%',:search,'%'))";
+    }
+    else{
+      $query.="* FROM ".$this->table." WHERE LOWER(".$search_column.") LIKE LOWER(CONCAT('%',:search,'%')) ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
+      print_r($query);
+    }
 
-    $query = "SELECT * FROM ".$this->table." WHERE LOWER(".$search_column.") LIKE LOWER(CONCAT('%',:search,'%')) ORDER BY ".$column." ".$direction." LIMIT ".$limit." OFFSET ".$offset;
-
+    if($total){
+      return $this->query_single($query, array("search"=>$search));
+    }
+    //otherwise do this!
     return $this->query($query,array("search"=>$search));
   }
 

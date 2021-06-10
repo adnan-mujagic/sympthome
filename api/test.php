@@ -5,12 +5,20 @@
 
   require_once dirname(__FILE__)."/clients/SMTPClient.class.php";
   require_once dirname(__FILE__)."/dao/UsersDao.class.php";
+  require_once dirname(__FILE__)."/dao/DiseasesDao.class.php";
+  require_once dirname(__FILE__)."/services/DiseaseService.class.php";
 
-  $smtp = new SMTPClient();
+
+  print_r("This thing works!");
+  $dff = new DiseaseService();
+  print_r($dff->get_all(10,10,"-id",TRUE));
+  die;
+
+  /*$smtp = new SMTPClient();
   $smtp->test();
   die;
   $userdao = new UsersDao();
-  $smtp->send_confirmation_email($userdao->get_by_id(1));
+  $smtp->send_confirmation_email($userdao->get_by_id(1));*/
 
 
 

@@ -16,9 +16,13 @@ Flight::route("GET /diseases",function(){
   $order = Flight::query('order',"-id");
 
   if($search){
+    $total = Flight::diseaseService()->get_diseases_by_name($search,$offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::diseaseService()->get_diseases_by_name($search,$offset,$limit,$order));
   }
   else{
+    $total = Flight::diseaseService()->get_all($offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::diseaseService()->get_all($offset,$limit,$order));
   }
 });
@@ -109,6 +113,16 @@ Flight::route("POST /admin/diseases/@id/symptoms", function($id){
   $data = Flight::request()->data->getData();
   $data["disease_id"]=$id;
   Flight::json(Flight::diseaseService()->add_symptom_for_disease($data));
+});
+
+
+/**
+ *@OA\Get(path="/diseases/popularity",tags={"Diseases"},security={{"ApiKeyAuth": {}}},
+ *  @OA\Response(response="200", description="Returns popular diseases!"),
+ *)
+ */
+Flight::route("GET /diseases/popularity",function(){
+  Flight::json(Flight::diseaseService()->get_disease_popularity());
 });
 
 

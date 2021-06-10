@@ -156,7 +156,13 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-      pagingType: "simple",
+      //pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+         settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+         settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }
+      },
       ajax: {
         url: "api/diseases",
         type: "GET",

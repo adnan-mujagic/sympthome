@@ -10,8 +10,8 @@ class DiseaseService extends BaseService{
     $this->sdbl = new SymptomDiseaseBodyPartLogDao();
   }
 
-  public function get_diseases_by_name($name,$offset = 0,$limit = 10,$order="-id"){
-    return $this->dao->get_entity_by_search($name,$offset,$limit,$order);
+  public function get_diseases_by_name($name,$offset = 0,$limit = 10,$order="-id",$total = FALSE){
+    return $this->dao->get_entity_by_search($name,$offset,$limit,$order,"name", $total);
   }
   public function add_disesase($data){
     $disease=[
@@ -37,6 +37,10 @@ class DiseaseService extends BaseService{
     $returned_instance = $this->sdbl->add($object);
     return $this->sdbl->get_pretty($returned_instance["id"]);
 
+  }
+
+  public function get_disease_popularity(){
+    return $this->dao->get_disease_popularity();
   }
 
 }

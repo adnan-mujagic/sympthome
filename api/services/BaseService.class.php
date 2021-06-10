@@ -14,8 +14,8 @@
       return $this->dao->get_by_id($id);
     }
 
-    public function get_all($offset = 0, $limit = 25, $order="-id"){
-      return $this->dao->get_all($offset, $limit, $order);
+    public function get_all($offset = 0, $limit = 25, $order="-id", $total=FALSE){
+      return $this->dao->get_all($offset, $limit, $order, $total);
     }
 
     public function update($updates, $id){
