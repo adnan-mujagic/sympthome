@@ -24,8 +24,8 @@ class DiseaseService extends BaseService{
     return $this->dao->add($disease);
   }
 
-  public function get_user_diseases($user_id, $offset, $limit, $order, $search){
-    return $this->dao->get_user_diseases($user_id,$offset,$limit,$order,$search);
+  public function get_user_diseases($user_id, $offset, $limit, $order, $search,$total=FALSE){
+    return $this->dao->get_user_diseases($user_id,$offset,$limit,$order,$search,$total);
   }
 
   public function add_symptom_for_disease($data){

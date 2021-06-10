@@ -80,7 +80,13 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-      pagingType: "simple",
+      //pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+         settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+         settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }
+     },
       ajax: {
         url: "api/symptoms",
         type: "GET",
@@ -164,7 +170,13 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-      pagingType: "simple",
+      //pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+         settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+         settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }
+      },
       ajax: {
         url: "api/users/symptoms",
         type: "GET",
@@ -206,6 +218,12 @@
       serverSide: true,
       bDestroy: true,
       pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+         settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+         settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }
+      },
       ajax: {
         url: "api/users/diseases",
         type: "GET",

@@ -23,10 +23,17 @@ class DiseasesDao extends BaseDao{
   }*/
 
 
-  public function get_user_diseases($user_id,$offset,$limit,$order,$search){
+  public function get_user_diseases($user_id,$offset,$limit,$order,$search,$total=FALSE){
     list($column,$direction) = $this->parse_order($order);
+    $query="SELECT ";
+    if($total){
+      $query.="COUNT(d.name) AS total ";
+    }
+    else{
+      $query.="d.name, d.description, d.treatment_description, d.category_id ";
+    }
     $params = [];
-    $query = "SELECT d.name, d.description, d.treatment_description, d.category_id FROM diseases d
+    $query .= "FROM diseases d
               JOIN symptom_disease_bodypart_log sdbl on sdbl.disease_id = d.id
               JOIN symptoms s ON s.id = sdbl.symptom_id
               JOIN user_symptom_log usl ON s.id = usl.symptom_id
@@ -36,8 +43,15 @@ class DiseasesDao extends BaseDao{
       $query= $query." AND LOWER(d.name) LIKE LOWER(CONCAT('%',:search,'%'))";
       $params["search"]=$search;
     }
+    
+    if($total){
+      print_r($query);
+      return $this->query_single($query,$params);
+    }
+
     $query = $query." GROUP BY d.id ORDER BY d.".$column." ".$direction.
                     " LIMIT ".$limit." OFFSET ".$offset;
+    print_r($query);
     return $this->query($query,$params);
   }
 

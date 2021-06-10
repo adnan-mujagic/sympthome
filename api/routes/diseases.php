@@ -93,6 +93,8 @@ Flight::route("GET /users/diseases", function(){
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",20);
   $order = Flight::query("order","-id");
+  $total = Flight::diseaseService()->get_user_diseases(Flight::get("user")["id"],$offset, $limit,$order, $search,TRUE);
+  header("total-records: ".$total["total"]);
   Flight::json(Flight::diseaseService()->get_user_diseases(Flight::get("user")["id"],$offset, $limit,$order, $search));
 });
 

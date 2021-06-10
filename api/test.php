@@ -11,8 +11,8 @@
 
 
   print_r("This thing works!");
-  $ss = new SymptomService();
-  print_r($ss->get_symptoms_by_name("a",0,10,"-id",TRUE));
+  $ss = new DiseaseService();
+  print_r($ss->get_user_diseases(1,0,10,"-id",NULL, FALSE));
   die;
 
   /*$smtp = new SMTPClient();

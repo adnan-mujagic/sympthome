@@ -109,6 +109,8 @@ Flight::route("GET /users/symptoms", function(){
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",20);
   $order = Flight::query("order","-id");
+  $total = Flight::symptomService()->get_user_symptoms(Flight::get("user")["id"],$offset, $limit, $order, $search, TRUE);
+  header("total-records: ".$total["total"]);
   Flight::json(Flight::symptomService()->get_user_symptoms(Flight::get("user")["id"],$offset, $limit,$order, $search));
 });
 
