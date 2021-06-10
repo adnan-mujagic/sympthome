@@ -10,9 +10,9 @@ class SymptomService extends BaseService{
     $this->sdbl=new SymptomDiseaseBodyPartLogDao();
   }
 
-  public function get_symptoms_by_name($name,$offset = 0, $limit = 25, $order="-id"){
+  public function get_symptoms_by_name($name,$offset = 0, $limit = 25, $order="-id", $total=FALSE){
 
-    return $this->dao->get_entity_by_search($name,$offset,$limit,$order);
+    return $this->dao->get_entity_by_search($name,$offset,$limit,$order,"name",$total);
     /*$query = "SELECT * FROM symptoms
               WHERE LOWER(name) LIKE LOWER(CONCAT('%',:name,'%'))";
     return $this->query($query,["name"=>$name]);*/

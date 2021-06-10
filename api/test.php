@@ -7,11 +7,12 @@
   require_once dirname(__FILE__)."/dao/UsersDao.class.php";
   require_once dirname(__FILE__)."/dao/DiseasesDao.class.php";
   require_once dirname(__FILE__)."/services/DiseaseService.class.php";
+  require_once dirname(__FILE__)."/services/SymptomService.class.php";
 
 
   print_r("This thing works!");
-  $dff = new DiseaseService();
-  print_r($dff->get_all(10,10,"-id",TRUE));
+  $ss = new SymptomService();
+  print_r($ss->get_symptoms_by_name("a",0,10,"-id",TRUE));
   die;
 
   /*$smtp = new SMTPClient();

@@ -15,9 +15,13 @@ Flight::route("GET /symptoms", function(){
   $limit = Flight::query("limit",10);
   $order = Flight::query("order","-id");
   if($search){
+    $total=Flight::symptomService()->get_symptoms_by_name($search,$offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::symptomService()->get_symptoms_by_name($search,$offset,$limit,$order));
   }
   else{
+    $total = Flight::symptomService()->get_all($offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::symptomService()->get_all($offset,$limit,$order));
   }
 
