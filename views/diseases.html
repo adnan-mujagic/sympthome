@@ -6,7 +6,7 @@
         <!-- /.col-lg-12 -->
     </div>
 
-    <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#add-disease-form-modal" style="margin-bottom:15px;">
+    <button class="admin-stuff btn btn-success" data-toggle="modal" data-target="#add-disease-form-modal" style="margin-bottom:15px;">
         <i class="fas fa-plus-circle"></i> Add Disease
     </button>
 
@@ -90,6 +90,7 @@
 
 
 </div>
+  <script type="text/javascript" src="./assets/js/utils.js"></script>
 
   <script type="text/javascript">
     $("#add-disease-form").validate({
@@ -107,6 +108,15 @@
       }
      });
     getDiseases();
+    removeAdminStuff();
+
+    function removeAdminStuff(){
+      var user_info = parse_jwt(localStorage.getItem("token"));
+      if(user_info.role!="ADMIN"){
+        $(".admin-stuff").remove();
+      }
+
+    }
 
     function addDisease(form){
       $.ajax({

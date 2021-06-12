@@ -60,7 +60,7 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                
+
 
                 <ul class="nav navbar-right navbar-top-links">
                     <li class="dropdown navbar-inverse">
@@ -107,6 +107,9 @@
                             <li>
                                 <a href="#medicines"><i class="fas fa-pills"></i> Medicines</a>
                             </li>
+                            <li class="admin-stuff">
+                                <a href="#admin-panel"><i class="fas fa-tools"></i> Admin</a>
+                            </li>
 
 
                         </ul>
@@ -119,6 +122,7 @@
               <section id="medicines" data-load="medicines.html" ></section>
               <section id="diseases" data-load="diseases.html" ></section>
               <section id="your_symptoms" data-load="your_symptoms.html" ></section>
+              <section id="admin-panel" data-load="admin-panel.html" ></section>
 
 
             </main>
@@ -173,6 +177,10 @@
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
+              var user_info = parse_jwt(window.localStorage.getItem("token"));
+              if (user_info.role != "ADMIN"){
+                $(".admin-stuff").remove();
+              }
               $('body').show();
             }
 
