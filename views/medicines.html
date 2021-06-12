@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-lg-12">
                   <div class="dataTable_wrapper">
-                      <table id="disease-container" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                      <table id="medicine-container" class="table table-striped table-bordered table-hover" id="dataTables-example">
                           <thead>
                               <tr>
                                   <th>ID</th>
@@ -32,7 +32,7 @@
                   <div class="modal fade" id="add-medicine-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                           <div class="modal-content">
-                            <form role="form" id="add-disease-form">
+                            <form role="form" id="add-medicine-form">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4 class="modal-title" id="myModalLabel">Add Medicine Form</h4>
@@ -46,12 +46,12 @@
 
                                   <div class="form-group">
                                       <label>Medicine Instructions</label>
-                                      <textarea type="text" name="description" class="form-control required" rows="3" placeholder="Enter medicine instructions" required></textarea>
+                                      <textarea type="text" name="instruction" class="form-control required" rows="3" placeholder="Enter medicine instructions" required></textarea>
                                   </div>
 
                                   <div class="form-group">
                                       <label>Warning</label>
-                                      <textarea type="text" name="treatment_description" class="form-control required" rows="3" required placeholder="Enter medicine warnings"></textarea>
+                                      <textarea type="text" name="warning" class="form-control required" rows="3" required placeholder="Enter medicine warnings"></textarea>
                                   </div>
 
                                   <div class="form-group">
@@ -60,7 +60,7 @@
                                   </div>
                                   <div class="form-group">
                                       <label>Requires Prescription</label>
-                                      <input type="checkbox" name="requires_prescription"  required>
+                                      <input type="text" name="requires_prescription" class="form-control required" placeholder="1 for TRUE, 0 for FALSE" required>
                                   </div>
                                 </div>
 
@@ -83,6 +83,114 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" src="./assets/js/utils.js"></script>
+<script type="text/javascript" src="./assets/js/restClient.js"></script>
 
+<script type="text/javascript">
+  $("#add-medicine-form").validate({
+    submitHandler: function(form, event) {
+      event.preventDefault();
+      var data = Utils.jsonize($(form));
+
+      if(!data.id){
+        addMedicine(data);
+      }
+      else{
+        updateMedicine(data);
+      }
+    }
+   });
+   getMedicines();
+   removeAdminStuff();
+
+   function removeAdminStuff(){
+     var user_info = Utils.parse_jwt(localStorage.getItem("token"));
+     if(user_info.role!="ADMIN"){
+       $(".admin-stuff").remove();
+     }
+   }
+
+   function updateMedicine(form){
+     RestClient.put("api/admin/medicines/"+form.id, form , function(data){
+       toastr.success("Medicine successfully updataed!");
+       getMedicines();
+       $("#add-medicine-form").trigger("reset");
+       $("#add-medicine-form *[name='id']").val("");
+       $('#add-medicine-form-modal').modal("hide");
+     });
+   }
+
+   function addMedicine(form){
+     RestClient.post("api/admin/medicines", form, function(data){
+       toastr.success("Medicine has been added!");
+       getMedicines();
+       $("#add-medicine-form").trigger("reset");
+       $('#add-medicine-form-modal').modal("hide");
+       console.log(data);
+     });
+   }
+
+   function openEditMedicineModal(id){
+     RestClient.get("api/medicines/"+id, function(data){
+       $("#add-medicine-form *[name='id']").val(data.id);
+       $("#add-medicine-form *[name='name']").val(data.name);
+       $("#add-medicine-form *[name='instruction']").val(data.instruction);
+       $("#add-medicine-form *[name='warning']").val(data.warning);
+       $("#add-medicine-form *[name='side_effects']").val(data.side_effects);
+       $("#add-medicine-form *[name='requires_prescription']").val(data.requires_prescription);
+       $("#add-medicine-form-modal").modal("show");
+       console.log(data);
+     });
+   }
+
+
+   function getMedicines(){
+      $("#medicine-container").DataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+      //pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+         settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+         settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }
+      },
+      ajax: {
+        url: "api/medicines",
+        type: "GET",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
+        },
+        dataSrc: function(resp){
+          //console.log(resp);
+          return resp;
+        },
+        data: function ( d ) {
+          d.offset=d.start;
+          d.limit=d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
+          //console.log(d);
+        }
+      },
+      columns: [
+            { "data": "id",
+              "render": function ( data, type, row, meta ) {
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditMedicineModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
+            { "data": "name" },
+            { "data": "instruction" },
+            { "data": "warning" },
+            { "data": "side_effects" },
+            { "data": "date_added" }
+        ],
+    });
+    }
 </script>

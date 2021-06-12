@@ -10,8 +10,8 @@ class MedicineService extends BaseService{
     $this->dml = new DiseaseMedicineLogDao();
   }
 
-  public function get_medicines_by_name($search,$offset=0,$limit=10,$order="-id"){
-    return $this->dao->get_entity_by_search($search,$offset,$limit,$order);
+  public function get_medicines_by_name($search,$offset=0,$limit=10,$order="-id",$total = FALSE){
+    return $this->dao->get_entity_by_search($search,$offset,$limit,$order,"name",$total);
   }
 
   public function add_medicine($data){

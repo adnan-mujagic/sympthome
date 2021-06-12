@@ -17,9 +17,13 @@ Flight::route("GET /medicines",function(){
   $limit = Flight::query("limit",10);
   $order = Flight::query("order","-id");
   if(!$search){
+    $total = Flight::medicineService()->get_all($offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::medicineService()->get_all($offset,$limit,$order));
   }
   else{
+    $total = Flight::medicineService()->get_medicines_by_name($search,$offset,$limit,$order,TRUE);
+    header("total-records: ".$total["total"]);
     Flight::json(Flight::medicineService()->get_medicines_by_name($search,$offset,$limit,$order));
   }
 });
@@ -92,7 +96,8 @@ Flight::route("POST /admin/medicines/@id/diseases",function($id){
 */
 Flight::route("PUT /admin/medicines/@id",function($id){
   $data = Flight::request()->data->getData();
-  Flight::json(Flight::medicineService()->update($data,$id));
+  Flight::medicineService()->update($data,$id);
+  Flight::json(Flight::medicineService()->get_by_id($id));
 });
 
 /**
