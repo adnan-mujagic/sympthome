@@ -91,12 +91,13 @@
 
 </div>
   <script type="text/javascript" src="./assets/js/utils.js"></script>
+  <script type="text/javascript" src="./assets/js/restClient.js"></script>
 
   <script type="text/javascript">
     $("#add-disease-form").validate({
       submitHandler: function(form, event) {
         event.preventDefault();
-        var data = jsonize($(form));
+        var data = Utils.jsonize($(form));
 
         if(!data.id){
           addDisease(data);
@@ -111,7 +112,7 @@
     removeAdminStuff();
 
     function removeAdminStuff(){
-      var user_info = parse_jwt(localStorage.getItem("token"));
+      var user_info = Utils.parse_jwt(localStorage.getItem("token"));
       if(user_info.role!="ADMIN"){
         $(".admin-stuff").remove();
       }
@@ -119,44 +120,22 @@
     }
 
     function addDisease(form){
-      $.ajax({
-         url: "api/admin/diseases",
-         type: "POST",
-         data: JSON.stringify(form),
-         contentType: "application/json",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-           toastr.success("Disease has been added");
-           getDiseases();
-           $("#add-disease-form").trigger("reset");
-           $('#add-disease-form-modal').modal("hide");
-           console.log(data);
-         },
-         error: function(jqXHR, textStatus, errorThrown ){
-           toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
-         }
+      RestClient.post("api/admin/diseases", JSON.stringify(form), function(data){
+        toastr.success("Disease has been added!");
+        getDiseases();
+        $("#add-disease-form").trigger("reset");
+        $('#add-disease-form-modal').modal("hide");
+        console.log(data);
       });
     }
 
     function updateDisease(form){
-      $.ajax({
-        url:"api/admin/diseases/"+form.id,
-        type:"PUT",
-        data: JSON.stringify(form),
-        contentType: "application/json",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        success: function(data) {
-          toastr.success("Disease has been updated!");
-          getDiseases();
-          $("#add-disease-form").trigger("reset");
-          $("#add-disease-form *[name='id']").val("");
-          $('#add-disease-form-modal').modal("hide");
-
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          toastr.error(jqXHR.responseJSON.message);
-        }
+      RestClient.put("api/admin/diseases/"+form.id,form, function(data){
+        toastr.success("Disease has been updated!");
+        getDiseases();
+        $("#add-disease-form").trigger("reset");
+        $("#add-disease-form *[name='id']").val("");
+        $('#add-disease-form-modal').modal("hide");
       })
     }
 
@@ -214,7 +193,7 @@
     }
 
     function openEditDiseaseModal(id){
-      $.ajax({
+      /*$.ajax({
         url: "api/diseases/"+id,
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
@@ -227,6 +206,16 @@
           $("#add-disease-form-modal").modal("show");
           console.log(data);
         }
-      });
+      });*/
+
+      RestClient.get("api/diseases/"+id, function(data){
+        $("#add-disease-form *[name='id']").val(data.id);
+        $("#add-disease-form *[name='name']").val(data.name);
+        $("#add-disease-form *[name='description']").val(data.description);
+        $("#add-disease-form *[name='treatment_description']").val(data.treatment_description);
+        $("#add-disease-form *[name='category_id']").val(data.category_id);
+        $("#add-disease-form-modal").modal("show");
+        console.log(data);
+      })
     }
   </script>

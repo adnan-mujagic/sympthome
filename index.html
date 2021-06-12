@@ -9,6 +9,8 @@
 
         <title>Sympthome</title>
 
+        <link rel="stylesheet" href="./assets/css/custom.css">
+
         <!-- DataTable CSS -->
         <link href="./assets/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
         <link href="./assets/css/dataTables/dataTables.responsive.css" rel="stylesheet">
@@ -48,7 +50,7 @@
         <div id="wrapper">
 
             <!-- Navigation -->
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <nav class="" role="navigation">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="index.html">Sympthome</a>
                 </div>
@@ -63,7 +65,7 @@
 
 
                 <ul class="nav navbar-right navbar-top-links">
-                    <li class="dropdown navbar-inverse">
+                    <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
                         </a>
@@ -111,8 +113,6 @@
                             <li class="admin-stuff">
                                 <a href="admin.html"><i class="fas fa-tools"></i> Admin</a>
                             </li>
-
-
                         </ul>
                     </div>
                 </div>
@@ -160,6 +160,7 @@
         <script src="./assets/js/jQuerySPApp.js"></script>
 
         <script type="text/javascript" src="./assets/js/utils.js"></script>
+        <script type="text/javascript" src="./assets/js/restClient.js"></script>
 
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 
@@ -178,7 +179,7 @@
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
-              var user_info = parse_jwt(window.localStorage.getItem("token"));
+              var user_info = Utils.parse_jwt(window.localStorage.getItem("token"));
               if (user_info.role != "ADMIN"){
                 $(".admin-stuff").remove();
               }

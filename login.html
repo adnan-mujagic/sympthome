@@ -242,7 +242,7 @@
           function doLogin(){
 
             $("#login-button").prop("disabled", true);
-            $.post( "api/login", jsonize("#login-form"),function( data ) {
+            $.post( "api/login", Utils.jsonize("#login-form"),function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
@@ -257,7 +257,7 @@
           function changePassword(){
             $("#change-password-button").prop("disabled", true);
 
-            $.post( "api/reset", jsonize("#change-form") ).done(function( data ) {
+            $.post( "api/reset", Utils.jsonize("#change-form") ).done(function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";
             }).fail(function(error) {
@@ -269,7 +269,7 @@
           function doRegister(){
 
             $("#register-button").prop("disabled",true);
-            $.post("api/register", jsonize("#register-form"),function(data){
+            $.post("api/register", Utils.jsonize("#register-form"),function(data){
               console.log(data);
               $("#warning-alert").addClass("hidden");
               $("#success-alert").html(data.message);

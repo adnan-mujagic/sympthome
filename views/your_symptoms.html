@@ -125,21 +125,12 @@
       let info = {
         "symptom_id":id,
       }
-      $.ajax({
-        url:"api/users/symptoms",
-        type:"POST",
-        data: JSON.stringify(info),
-        contentType: "application/json",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        success: function(data) {
-          toastr.success("Symptom has been added!");
-          getUserSymptoms();
-          getUserDiseases();
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          toastr.error(jqXHR.responseJSON.message);
-        }
-      })
+
+      RestClient.post("api/users/symptoms",info, function(data) {
+        toastr.success("Symptom has been added!");
+        getUserSymptoms();
+        getUserDiseases();
+      });
     }
 
     function deleteSymptom(id){
@@ -147,21 +138,11 @@
         "symptom_id":id
       }
 
-      $.ajax({
-        url:"api/users/symptoms",
-        type:"PUT",
-        data: JSON.stringify(info),
-        contentType: "application/json",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        success: function(data) {
-          toastr.success("Symptom has been deleted!");
-          getUserSymptoms();
-          getUserDiseases();
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          toastr.error(jqXHR.responseJSON.message);
-        }
-      })
+      RestClient.put("api/users/symptoms", info,function(data) {
+        toastr.success("Symptom has been deleted!");
+        getUserSymptoms();
+        getUserDiseases();
+      });
     }
 
     function getUserSymptoms(){
