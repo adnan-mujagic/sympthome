@@ -24,10 +24,10 @@ Flight::register("diseaseService", "DiseaseService");
 Flight::register("medicineService","MedicineService");
 Flight::register("bodyPartService", "BodyPartService");
 
-/*Error exception function*/
+/*Error exception function
 Flight::map("error",function(Exception $e){
-  Flight::json(["message"=>$e->getMessage()],/*500*/ 500);
-});
+  Flight::json(["message"=>$e->getMessage()], 500);
+});*/
 
 /*Utility function to return query parameters*/
 Flight::map("query",function($name,$default_value=NULL){
