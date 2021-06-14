@@ -65,6 +65,8 @@ class BaseDao{
     $query=substr($query,0,-2);
     $query.=")";
 
+    print_r($query);
+
 
     $stmt=$this->connection->prepare($query);
     $stmt->execute($entity);

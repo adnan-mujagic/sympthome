@@ -4,17 +4,43 @@ class Users{
       submitHandler: function(form, event) {
         event.preventDefault();
         var data = Utils.jsonize($(form));
+        console.log(data);
 
         if(!data.id){
+          delete(data.id);
           Users.addUser(data);
         }
         else{
-          Diseases.updateUser(data);
+          //We need to check if password field is empty and if it is we mustn't update it!
+          if(data.password==""){
+            delete(data.password);
+          }
+          Users.updateUser(data);
         }
 
       }
      });
     Users.getUsers();
+  }
+
+  static addUser(form){
+    RestClient.post("api/register", form, function(data){
+      toastr.success("User has been added!");
+      Users.getUsers();
+      $("#add-user-form").trigger("reset");
+      $('#add-user-form-modal').modal("hide");
+      console.log(data);
+    });
+  }
+
+  static updateUser(form){
+    RestClient.put("api/admin/users/"+form.id,form, function(data){
+      toastr.success("User has been updated!");
+      Users.getUsers();
+      $("#add-user-form").trigger("reset");
+      $("#add-user-form *[name='id']").val("");
+      $('#add-user-form-modal').modal("hide");
+    })
   }
 
   static getUsers(){
@@ -66,5 +92,17 @@ class Users{
         ],
 
     });
+  }
+
+  static openEditUserModal(id){
+    RestClient.get("api/admin/users/"+id, function(data){
+      $("#add-user-form *[name='id']").val(data.id);
+      $("#add-user-form *[name='first_name']").val(data.first_name);
+      $("#add-user-form *[name='last_name']").val(data.last_name);
+      $("#add-user-form *[name='age']").val(data.age);
+      $("#add-user-form *[name='email']").val(data.email);
+      $("#add-user-form-modal").modal("show");
+      console.log(data);
+    })
   }
 }
