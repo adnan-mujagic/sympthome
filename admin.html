@@ -154,15 +154,20 @@
         <!-- Toastr JS -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+        //controllers
+
+        <script src="./assets/js/controllers/diseases.js"></script>
+        <script src="./assets/js/controllers/medicines.js"></script>
+
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
 
             // define routes
 
-            /**app.route({view: 'dashboard', load: 'dashboard.html' });
-            app.route({view: 'tables', load: 'tables.html' });
-            app.route({view: 'notifications', load: 'notifications.html' });*/
+            app.route({view: 'dashboard', load: 'dashboard.html' });
+            app.route({view: 'diseases', load: 'diseases.html', onReady: function() { Diseases.init() }});
+            app.route({view: 'medicines', load: 'medicines.html', onReady: function() { Medicines.init() }});
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{

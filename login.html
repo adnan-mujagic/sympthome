@@ -57,12 +57,12 @@
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="login-button" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Log In</button>
+                                    <button id="login-button" onclick="Login.doLogin();" class="btn btn-lg btn-success btn-block">Log In</button>
                                     </div>
                                     <div class="container">
                                       <div class="row">
-                                        <a href="#" onclick="showRegister();">Want to register?</a>
-                                        <a href="#" onclick="showForgotPasswordForm();">Forgot password?</a>
+                                        <a href="#" onclick="Login.showRegister();">Want to register?</a>
+                                        <a href="#" onclick="Login.showForgotPasswordForm();">Forgot password?</a>
                                       </div>
                                     </div>
 
@@ -111,9 +111,9 @@
 
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="register-button" onclick="doRegister();" type="button" class="btn btn-lg btn-success btn-block">Register</button>
+                                      <button id="register-button" onclick="Login.doRegister();" type="button" class="btn btn-lg btn-success btn-block">Register</button>
                                     </div>
-                                    <a href="#" onclick="showLogin();">Already have an account?</a>
+                                    <a href="#" onclick="Login.showLogin();">Already have an account?</a>
                                 </fieldset>
                             </form>
                         </div>
@@ -143,9 +143,9 @@
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="send-recovery-link-button" onclick="sendRecoveryLink();" type="button" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
+                                      <button id="send-recovery-link-button" onclick="Login.sendRecoveryLink();" type="button" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
                                     </div>
-                                    <a href="#" onclick="showLogin();">Back to login?</a>
+                                    <a href="#" onclick="Login.showLogin();">Back to login?</a>
                                 </fieldset>
                             </form>
                         </div>
@@ -177,7 +177,7 @@
                                     </div>
                                     <div class="form-group">
                                     <!-- Change this to a button or input when using this as a form -->
-                                      <button id="change-password-button" onclick="changePassword();" type="button" class="btn btn-lg btn-success btn-block">Change Password</button>
+                                      <button id="change-password-button" onclick="Login.changePassword();" type="button" class="btn btn-lg btn-success btn-block">Change Password</button>
                                     </div>
 
                                 </fieldset>
@@ -198,113 +198,11 @@
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+        <script src="./assets/js/restClient.js"></script>
+        <script src="./assets/js/controllers/login.js"></script>
+
         <script type="text/javascript">
-
-          $(function(){
-            if(window.localStorage.getItem("token")){
-              window.location = "index.html";
-            }else{
-              $("body").show();
-            }
-            var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.has("token")){
-              $("#change-password-token").val(urlParams.get("token"));
-              showResetPasswordForm();
-            }
-          });
-
-
-
-          function showRegister(){
-            $("#login-form-container").addClass("hidden");
-            $("#register-form-container").removeClass("hidden");
-          }
-
-          function showLogin(){
-            $("#register-form-container").addClass("hidden");
-            $("#change-password-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-            $("#login-form-container").removeClass("hidden");
-          }
-
-          function showForgotPasswordForm(){
-            $("#login-form-container").addClass("hidden");
-            $("#forgot-form-container").removeClass("hidden");
-          };
-
-          function showResetPasswordForm(){
-            $("#register-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-            $("#login-form-container").addClass("hidden");
-            $("#change-password-form-container").removeClass("hidden");
-          }
-
-          function doLogin(){
-
-            $("#login-button").prop("disabled", true);
-            $.post( "api/login", Utils.jsonize("#login-form"),function( data ) {
-                window.localStorage.setItem("token", data.token);
-                window.location = "index.html";
-            }).fail(function(error) {
-              $("#warning-alert-login").html(error.responseJSON.message);
-              $("#warning-alert-login").removeClass("hidden");
-              //toastr.error(error.responseJSON.message);
-              $("#login-button").prop("disabled", false);
-            });
-
-          }
-
-          function changePassword(){
-            $("#change-password-button").prop("disabled", true);
-
-            $.post( "api/reset", Utils.jsonize("#change-form") ).done(function( data ) {
-                window.localStorage.setItem("token", data.token);
-                window.location = "index.html";
-            }).fail(function(error) {
-              toastr.error(error.responseJSON.message);
-              $("#change-password-button").prop("disabled", false);
-            });
-          }
-
-          function doRegister(){
-
-            $("#register-button").prop("disabled",true);
-            $.post("api/register", Utils.jsonize("#register-form"),function(data){
-              console.log(data);
-              $("#warning-alert").addClass("hidden");
-              $("#success-alert").html(data.message);
-              $("#success-alert").removeClass("hidden");
-              $("#form-body").addClass("hidden");
-            }).fail(function(error){
-              $("#warning-alert").html(error.responseJSON.message);
-              $("#warning-alert").removeClass("hidden");
-
-              //toastr.error(error.responseJSON.message);
-              $("#register-button").prop("disabled",false);
-            });
-
-          }
-
-          function sendRecoveryLink(){
-            var email ={
-              "email":$("#forgot-email").val()
-            };
-
-            $.post("api/forgot", email,function(data){
-              console.log(data);
-              $("#warning-alert-forgot").addClass("hidden");
-              $("#success-alert-forgot").html(data.message);
-              $("#success-alert-forgot").removeClass("hidden");
-              $("#forgot-form-body").addClass("hidden");
-
-
-            }).fail(function(error){
-              $("#warning-alert-forgot").html(error.responseJSON.message);
-              $("#warning-alert-forgot").removeClass("hidden");
-
-              //toastr.error(error.responseJSON.message);
-            })
-          }
+          Login.init();
         </script>
 
     </body>

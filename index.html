@@ -169,6 +169,7 @@
 
         <script src="./assets/js/controllers/diseases.js"></script>
         <script src="./assets/js/controllers/medicines.js"></script>
+        <script src="./assets/js/controllers/symptoms.js"></script>
 
         <script type="text/javascript">
           $(document).ready(function() {
@@ -179,6 +180,7 @@
             app.route({view: 'dashboard', load: 'dashboard.html' });
             app.route({view: 'diseases', load: 'diseases.html', onReady: function() { Diseases.init() }});
             app.route({view: 'medicines', load: 'medicines.html', onReady: function() { Medicines.init() }});
+            app.route({view: 'your_symptoms', load: 'your_symptoms.html', onReady: function() { Symptoms.init() }});
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
