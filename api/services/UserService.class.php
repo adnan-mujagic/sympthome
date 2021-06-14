@@ -46,12 +46,12 @@
 
     }
 
-    public function get_users($search,$offset,$limit,$order){
+    public function get_users($search,$offset,$limit,$order,$total=FALSE){
       if($search){
-        return $this->dao->get_user_by_name($search,$offset,$limit,$order);
+        return $this->dao->get_user_by_name($search,$offset,$limit,$order,$total);
       }
       else{
-        return $this->dao->get_all($offset, $limit,$order);
+        return $this->dao->get_all($offset, $limit,$order,$total);
       }
     }
 

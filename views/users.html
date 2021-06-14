@@ -4,8 +4,91 @@
             <h1 class="page-header">Manage Users</h1>
         </div>
         <!-- /.col-lg-12 -->
-    </div>
-    <div class="row">
-      hello these are medicines
-    </div>
+        <button class="admin-stuff btn btn-success" data-toggle="modal" data-target="#add-disease-form-modal" style="margin-bottom:15px;">
+            <i class="fas fa-plus-circle"></i> Add User
+        </button>
+
+
+        <!-- /.row (nested) -->
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                        <div class="dataTable_wrapper">
+                            <table id="users-container" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+            </div>
+          </div>
+
+          <div class="modal fade" id="add-user-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form role="form" id="add-user-form">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add User Form</h4>
+                        </div>
+                        <input type="hidden" name="id" />
+                        <div class="modal-body">
+                          <div class="form-group">
+                              <label>First Name</label>
+                              <input type="text" name="first_name" class="form-control required" placeholder="Enter disease name" required minlength="3">
+                          </div>
+
+                          <div class="form-group">
+                              <label>Last Name</label>
+                              <textarea type="text" name="last_name" class="form-control required" rows="3" placeholder="Enter disease description" required></textarea>
+                          </div>
+
+                          <div class="form-group">
+                              <label>Age</label>
+                              <textarea type="number" name="age" class="form-control required" required placeholder="Enter disease treatment description"></textarea>
+                          </div>
+
+                          <div class="form-group">
+                              <label>Email</label>
+                              <input type="text" name="email" class="form-control required" placeholder="Enter disease category id" required>
+                          </div>
+                          <div class="form-group">
+                              <label>Type</label>
+                              <input type="text" name="type" class="form-control required" placeholder="Enter disease category id" required>
+                          </div>
+                          <div class="form-group">
+                              <label>Status</label>
+                              <input type="text" name="status" class="form-control required" placeholder="Enter disease category id" required>
+                          </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Save changes</button>
+                        </div>
+
+
+                    </form>
+
+
+
+                  </div>
+                  <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+          </div>
+        </div>
 </div>

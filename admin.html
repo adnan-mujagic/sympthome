@@ -154,10 +154,11 @@
         <!-- Toastr JS -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-        //controllers
+        <!-- CONTROLLERS -->
 
         <script src="./assets/js/controllers/diseases.js"></script>
         <script src="./assets/js/controllers/medicines.js"></script>
+        <script src="./assets/js/controllers/users.js"></script>
 
         <script type="text/javascript">
           $(document).ready(function() {
@@ -165,7 +166,7 @@
 
             // define routes
 
-            app.route({view: 'dashboard', load: 'dashboard.html' });
+            app.route({view: 'users', load: 'users.html', onReady: function() {Users.init()} });
             app.route({view: 'diseases', load: 'diseases.html', onReady: function() { Diseases.init() }});
             app.route({view: 'medicines', load: 'medicines.html', onReady: function() { Medicines.init() }});
             if(!window.localStorage.getItem("token")){
