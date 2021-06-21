@@ -53,7 +53,7 @@
                 layout: "StandaloneLayout"
             })
             // End Swagger UI call region
-            console.log(ui.url);
+            console.log("//<?=$_SERVER["HTTP_HOST"].str_replace("docs","documentation",$_SERVER["REQUEST_URI"]) ?>");
             console.log(ui);
 
             window.ui = ui
