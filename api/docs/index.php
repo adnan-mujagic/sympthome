@@ -53,6 +53,8 @@
                 layout: "StandaloneLayout"
             })
             // End Swagger UI call region
+            console.log(ui.url);
+            console.log(ui);
 
             window.ui = ui
         }
