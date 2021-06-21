@@ -3,7 +3,7 @@
  * @OA\Info(title="SymptHome API", version="0.2")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost:8080/api/", description="Development Environment" ),
- *    @OA\Server(url="sympthome-tvldx.ondigitalocean.app/api/", description="Production Environment" ),
+ *    @OA\Server(url="", description="Production Environment" ),
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
