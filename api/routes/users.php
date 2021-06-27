@@ -3,7 +3,7 @@
  * @OA\Info(title="SymptHome API", version="0.2")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost:8080/api/", description="Development Environment" ),
- *    @OA\Server(url="sympthome-tvldx.ondigitalocean.app/api/", description="Production Environment" ),
+ *    @OA\Server(url="http://sympthome-tvldx.ondigitalocean.app/api/", description="Production Environment" ),
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
@@ -27,10 +27,8 @@ Flight::route("GET /admin/users",function(){
   $offset = Flight::query("offset",0);
   $search = Flight::query("search");
   $order = Flight::query("order","-id");
-
   $total = Flight::userService()->get_users($search, $offset, $limit, $order, TRUE);
   header("total-records: ".$total["total"]);
-
   Flight::json(Flight::userService()->get_users($search,$offset,$limit,$order));
 });
 
