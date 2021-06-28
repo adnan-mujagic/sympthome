@@ -97,23 +97,24 @@
                             <li>
                                 <a href="#medicines"><i class="fas fa-pills"></i> Manage Medicines</a>
                             </li>
+                            <li>
+                                <a href="#admin_symptoms"><i class="fas fa-syringe"></i> Manage Symptoms</a>
+                            </li>
+                            <li>
+                                <a href="index.html"><i class="fas fa-arrow-left"></i> Back</a>
+                            </li>
+
                             <li class="divider"></li>
-
-
-
                         </ul>
                     </div>
                 </div>
             </nav>
 
             <main id="jqueryspapp" role="main">
-
               <section id="medicines" data-load="medicines.html" ></section>
               <section id="diseases" data-load="diseases.html" ></section>
               <section id="users" data-load="users.html" ></section>
-
-
-
+              <section id="admin_symptoms" data-load="admin_symptoms.html" ></section>
             </main>
 
         </div>
@@ -160,16 +161,18 @@
         <script src="./assets/js/controllers/diseases.js"></script>
         <script src="./assets/js/controllers/medicines.js"></script>
         <script src="./assets/js/controllers/users.js"></script>
+        <script src="./assets/js/controllers/admin_symptoms.js"></script>
 
         <script type="text/javascript">
           $(document).ready(function() {
-            var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
+            var app = $.jQuerySPApp({defaultView  : "users"}); // initialize
 
             // define routes
 
             app.route({view: 'users', load: 'users.html', onReady: function() {Users.init()} });
             app.route({view: 'diseases', load: 'diseases.html', onReady: function() { Diseases.init() }});
             app.route({view: 'medicines', load: 'medicines.html', onReady: function() { Medicines.init() }});
+            app.route({view: 'admin_symptoms', load: 'admin_symptoms.html', onReady: function() { AdminSymptoms.init()}});
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
