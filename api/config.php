@@ -12,6 +12,10 @@ class Config{
     return Config::get_env("DB_HOST","localhost");
   }
 
+  public static function DB_PORT(){
+    return Config::get_env("DB_PORT","3306");
+  }
+
   public static function DB_USERNAME(){
     return Config::get_env("DB_USERNAME","sympthomeadmin");
   }
