@@ -98,21 +98,6 @@ class Diseases{
   }
 
   static openEditDiseaseModal(id){
-    /*$.ajax({
-      url: "api/diseases/"+id,
-      type: "GET",
-      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-      success: function(data) {
-        $("#add-disease-form *[name='id']").val(data.id);
-        $("#add-disease-form *[name='name']").val(data.name);
-        $("#add-disease-form *[name='description']").val(data.description);
-        $("#add-disease-form *[name='treatment_description']").val(data.treatment_description);
-        $("#add-disease-form *[name='category_id']").val(data.category_id);
-        $("#add-disease-form-modal").modal("show");
-        console.log(data);
-      }
-    });*/
-
     RestClient.get("api/diseases/"+id, function(data){
       $("#add-disease-form *[name='id']").val(data.id);
       $("#add-disease-form *[name='name']").val(data.name);
