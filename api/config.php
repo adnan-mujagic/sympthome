@@ -33,29 +33,16 @@ class Config{
   }
 
   public static function SMTP_USERNAME(){
-    return Config::get_env("SMTP","adnanmujagic@outlook.com");
+    return Config::get_env("SMTP","<your_email>");
   }
 
   public static function SMTP_PASSWORD(){
-    return Config::get_env("SMTP_PASSWORD","Adonkey34");
+    return Config::get_env("SMTP_PASSWORD","<your_password>");
   }
 
   public static function SMTP_PORT(){
     return Config::get_env("SMTP_PORT",587);
   }
-
-  // TODO: DELETE THIS
-  //const DB_HOST = "localhost";
-  //const DB_USERNAME = "sympthomeadmin";
-  //const DB_PASSWORD = "sympthomeadmin";
-  //const DB_SCHEMA = "sympthomedb";
-
-  // TODO: DELETE THIS LATER
-  //SMPT EMAIL CLIENT CONSTANTS
-  //const SMTP = "smtp.office365.com";
-  //const SMTP_USERNAME = "adnanmujagic@outlook.com";
-  //const SMTP_PASSWORD = "Adonkey34";
-  //const SMTP_PORT = 587;
 
   public static function get_env($name, $default){
     return isset($_ENV[$name]) && trim($_ENV[$name]) != '' ? $_ENV[$name] : $default;
